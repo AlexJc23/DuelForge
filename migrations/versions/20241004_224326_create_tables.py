@@ -1,8 +1,8 @@
 """create_tables
 
-Revision ID: 42c1c42456bc
+Revision ID: d32d219285fb
 Revises: ffdc0a98111c
-Create Date: 2024-10-04 22:20:06.801622
+Create Date: 2024-10-04 22:43:26.814055
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '42c1c42456bc'
+revision = 'd32d219285fb'
 down_revision = 'ffdc0a98111c'
 branch_labels = None
 depends_on = None
@@ -26,6 +26,20 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('events',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('owner_id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
+    sa.Column('description', sa.String(length=300), nullable=False),
+    sa.Column('start_date', sa.Date(), nullable=False),
+    sa.Column('end_date', sa.Date(), nullable=False),
+    sa.Column('location', sa.String(length=100), nullable=False),
+    sa.Column('price', sa.Float(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('cards',
@@ -76,5 +90,6 @@ def downgrade():
 
     op.drop_table('comments')
     op.drop_table('cards')
+    op.drop_table('events')
     op.drop_table('decks')
     # ### end Alembic commands ###

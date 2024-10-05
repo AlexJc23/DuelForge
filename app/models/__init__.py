@@ -4,3 +4,4 @@ from .deck import Deck
 from .card import Card
 from .db import environment, SCHEMA
 from .Comments import Comment
+from .event import Event

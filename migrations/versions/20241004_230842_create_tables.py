@@ -1,8 +1,8 @@
 """create_tables
 
-Revision ID: d32d219285fb
+Revision ID: 31cf00ce1fd2
 Revises: ffdc0a98111c
-Create Date: 2024-10-04 22:43:26.814055
+Create Date: 2024-10-04 23:08:42.802322
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd32d219285fb'
+revision = '31cf00ce1fd2'
 down_revision = 'ffdc0a98111c'
 branch_labels = None
 depends_on = None
@@ -69,6 +69,24 @@ def upgrade():
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('card_images',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('card_id', sa.Integer(), nullable=False),
+    sa.Column('image_url', sa.String(length=100), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['card_id'], ['cards.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('event_images',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.Column('image_url', sa.String(length=100), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['event_id'], ['cards.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
+    )
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.add_column(sa.Column('first_name', sa.String(length=30), nullable=False))
         batch_op.add_column(sa.Column('last_name', sa.String(length=30), nullable=False))
@@ -88,6 +106,8 @@ def downgrade():
         batch_op.drop_column('last_name')
         batch_op.drop_column('first_name')
 
+    op.drop_table('event_images')
+    op.drop_table('card_images')
     op.drop_table('comments')
     op.drop_table('cards')
     op.drop_table('events')

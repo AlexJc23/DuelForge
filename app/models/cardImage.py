@@ -11,10 +11,10 @@ class CardImage(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     card_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('cards.id'), ondelete='CASCADE'), nullable=False)
     image_url = db.Column(db.String(100), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
-    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)  
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)
 
-    card = db.relationship('Card', back_populates='card_images')
+    cards = db.relationship('Card', back_populates='card_images')
 
     def to_dict(self):
         return {

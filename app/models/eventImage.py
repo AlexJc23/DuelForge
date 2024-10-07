@@ -9,12 +9,12 @@ class EventImage(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('cards.id'), ondelete='CASCADE'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('events.id'), ondelete='CASCADE'), nullable=False)
     image_url = db.Column(db.String(100), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
-    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
-    card = db.relationship('Card', back_populates='card_images')
+    events = db.relationship('Event', back_populates='event_images')
 
     def to_dict(self):
         return {

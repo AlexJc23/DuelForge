@@ -17,8 +17,15 @@ class User(db.Model, UserMixin):
     image_url = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
-    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)
+
+    # Relationships
+    comments = db.relationship('Comment', back_populates='users', cascade="all, delete-orphan")
+
+    events = db.relationship('Event', back_populates='users', cascade="all, delete-orphan")
+
+    decks = db.relationship('Deck', back_populates='users', cascade="all, delete-orphan")
 
     @property
     def password(self):
@@ -38,6 +45,6 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'created_at':self.created_at,
+            'created_at': self.created_at,
             'updated_at': self.updated_at
         }

@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
+
     @property
     def password(self):
         return self.hashed_password

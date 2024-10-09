@@ -50,4 +50,3 @@ RUN flask seed all
 
 # Start the application with gunicorn
 CMD ["gunicorn", "app:app"]
-

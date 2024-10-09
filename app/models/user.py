@@ -20,6 +20,10 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)
 
+    comments = db.relationship('Comment', back_populates='user', cascade="all, delete-orphan")
+    events = db.relationship('Event', back_populates='user', cascade="all, delete-orphan")
+    decks = db.relationship('Deck', back_populates='user', cascade="all, delete-orphan")
+
 
     @property
     def password(self):

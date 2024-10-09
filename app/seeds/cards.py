@@ -18,7 +18,6 @@ def seed_cards():
             break
         card = Card(
             id=card_data["id"],
-            deck_id=0,
             name=card_data["name"],
             type=card_data["type"],
             description=card_data["desc"],

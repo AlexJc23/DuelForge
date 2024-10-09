@@ -5,7 +5,7 @@ from .comments import seed_comment, undo_comments
 from .decks import seed_deck, undo_decks
 from .event_images import seed_eventImage, undo_eventImages
 from .events import seed_events, undo_events
-
+from .deck_cards import seed_cardDeck, undo_cardDeck
 
 
 from app.models.db import db, environment, SCHEMA
@@ -30,6 +30,7 @@ def seed():
         undo_decks()
         undo_events()
         undo_eventImages()
+        undo_cardDeck()
     seed_users()
     seed_cards()
     seed_card_images()
@@ -37,6 +38,7 @@ def seed():
     seed_comment()
     seed_events()
     seed_eventImage()
+    seed_cardDeck()
     # Add other seed functions here
 
 
@@ -50,4 +52,5 @@ def undo():
     undo_decks()
     undo_events()
     undo_eventImages()
+    undo_cardDeck()
     # Add other undo functions here

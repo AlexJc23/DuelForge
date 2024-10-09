@@ -1,7 +1,7 @@
 """empty message
 
 Revision ID: a2010cb00e9e
-Revises: 
+Revises:
 Create Date: 2024-10-08 22:26:44.042067
 
 """
@@ -61,7 +61,7 @@ def upgrade():
     sa.Column('deck_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=True),
     sa.Column('type', sa.String(length=50), nullable=True),
-    sa.Column('description', sa.String(length=500), nullable=True),
+    sa.Column('description', sa.String(length=1000), nullable=True),
     sa.Column('attack', sa.Integer(), nullable=False),
     sa.Column('defense', sa.Integer(), nullable=False),
     sa.Column('level', sa.Integer(), nullable=False),

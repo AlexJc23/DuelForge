@@ -12,7 +12,7 @@ class Card(db.Model):
     deck_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('decks.id'), ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(100))
     type = db.Column(db.String(50))
-    description = db.Column(db.String(500))
+    description = db.Column(db.String(1000))
     attack = db.Column(db.Integer, nullable=False, default=0)
     defense = db.Column(db.Integer, nullable=False, default=0)
     level = db.Column(db.Integer, nullable=False, default=0)

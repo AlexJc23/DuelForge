@@ -22,8 +22,8 @@ class Card(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
 
-    deck = db.relationship('Deck', back_populates='cards')
-    card_image = db.relationship('CardImage', back_populates='cards', cascade="all, delete-orphan")
+    decks = db.relationship('Deck', back_populates='cards')
+    card_images = db.relationship('CardImage', back_populates='cards', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

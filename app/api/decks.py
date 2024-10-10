@@ -48,3 +48,42 @@ def allDecks():
         decks_list.append(solo_deck)
 
     return jsonify(decks_list)
+
+
+@decks_routes.route('/<int:deck_id>')
+def deckDetails(deck_id):
+    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
+
+    if not deck_by_id:
+        return {'error': 'Deck doesnt exist'}, 404
+
+    deck_dict = deck_by_id.to_dict()
+
+    # owner info
+    owner_info = db.session.query(User).filter(deck_by_id.user_id == User.id).first()
+
+    owner_dict = {
+        'id': owner_info.id,
+        'username': owner_info.username
+    }
+
+    # cards in deck
+    cards = []
+    deck_card_table = db.session.query(DeckCard).filter(deck_by_id.id == DeckCard.deck_id).all()
+
+    for cardInfo in deck_card_table:
+        cardInfo.to_dict()
+
+        card = db.session.query(Card).filter(Card.id == cardInfo.card_id).first()
+        solo_card = card.to_dict()
+
+        cardImage = db.session.query(CardImage).filter(CardImage.card_id == card.id).first().to_dict()
+
+        solo_card['image'] = cardImage
+
+        cards.append(solo_card)
+
+    deck_dict['deck_owner'] = owner_dict
+    deck_dict['cards'] = cards
+
+    return jsonify(deck_dict)

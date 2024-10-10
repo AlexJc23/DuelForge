@@ -1,11 +1,10 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
-from .cards import seed_card_images, seed_cards, undo_card_images, undo_cards
+from .cards import seed_card_images, seed_cards, undo_card_images, undo_cards, seed_cardDeck, undo_cardDeck
 from .comments import seed_comment, undo_comments
 from .decks import seed_deck, undo_decks
 from .event_images import seed_eventImage, undo_eventImages
 from .events import seed_events, undo_events
-from .deck_cards import seed_cardDeck, undo_cardDeck
 
 
 from app.models.db import db, environment, SCHEMA

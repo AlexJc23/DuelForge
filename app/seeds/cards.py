@@ -1,6 +1,7 @@
 import requests
-from app.models import db, Card, CardImage, environment, SCHEMA
+from app.models import db, Card, CardImage, environment, SCHEMA, DeckCard
 from sqlalchemy.sql import text
+import random
 
 def fetch_card_data():
     response = requests.get("https://db.ygoprodeck.com/api/v7/cardinfo.php")
@@ -48,6 +49,30 @@ def seed_card_images():
     db.session.commit()
 
 
+def seed_cardDeck():
+    cards_data = fetch_card_data()
+
+
+
+
+    for index, card_data in enumerate(cards_data):
+        random_number = random.randrange(0, 31)
+        if index >= 500:
+            break
+        info = DeckCard(
+            card_id=card_data['id'],
+            deck_id=random_number
+        )
+
+        db.session.add(info)
+
+    db.session.commit()
+
+
+
+
+
+
 def undo_cards():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.cards RESTART IDENTITY CASCADE;")
@@ -61,5 +86,13 @@ def undo_card_images():
         db.session.execute(f"TRUNCATE table {SCHEMA}.card_images RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM card_images"))
+
+    db.session.commit()
+
+def undo_cardDeck():
+    if environment == "production":
+        db.session.execute(f"TRUNCATE table {SCHEMA}.deck_cards RESTART IDENTITY CASCADE;")
+    else:
+        db.session.execute(text("DELETE FROM deck_cards"))
 
     db.session.commit()

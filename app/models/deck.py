@@ -14,9 +14,10 @@ class Deck(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
-    owner = db.relationship('User', back_populates='decks')
-    comment = db.relationship('Comment', back_populates='decks', cascade="all, delete-orphan")
-    card = db.relationship('Card', back_populates='decks')
+    user = db.relationship('User', back_populates='decks')
+    comments = db.relationship('Comment', back_populates='decks', cascade="all, delete-orphan")
+    # cards = db.relationship('Card', back_populates='decks')
+    deck_cards = db.relationship('DeckCard', back_populates='decks')
 
     def to_dict(self):
         return {

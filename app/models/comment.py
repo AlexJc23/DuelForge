@@ -14,8 +14,8 @@ class Comment(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
-    owner = db.relationship('User', back_populates='comments')
-    deck = db.relationship('Deck', back_populates='comments')
+    user = db.relationship('User', back_populates='comments')
+    decks = db.relationship('Deck', back_populates='comments')
 
 
     def to_dict(self):

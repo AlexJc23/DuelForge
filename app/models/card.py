@@ -9,10 +9,10 @@ class Card(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    deck_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('decks.id'), ondelete='CASCADE'), nullable=False)
+    # deck_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('decks.id'), ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(100))
     type = db.Column(db.String(50))
-    description = db.Column(db.String(500))
+    description = db.Column(db.String(1000))
     attack = db.Column(db.Integer, nullable=False, default=0)
     defense = db.Column(db.Integer, nullable=False, default=0)
     level = db.Column(db.Integer, nullable=False, default=0)
@@ -22,9 +22,9 @@ class Card(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
 
-    deck = db.relationship('Deck', back_populates='cards')
-    card_image = db.relationship('CardImage', back_populates='cards', cascade="all, delete-orphan")
-
+    # decks = db.relationship('Deck', back_populates='cards')
+    card_images = db.relationship('CardImage', back_populates='cards', cascade="all, delete-orphan")
+    deck_cards = db.relationship('DeckCard', back_populates='cards')
     def to_dict(self):
         return {
             'id': self.id,

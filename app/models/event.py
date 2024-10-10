@@ -19,8 +19,8 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)  # Updated
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)  # Updated
 
-    owner = db.relationship('User', back_populates='events')
-    event_image = db.relationship('EventImage', back_populates='events', cascade="all, delete-orphan")
+    user = db.relationship('User', back_populates='events')
+    event_images = db.relationship('EventImage', back_populates='events', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

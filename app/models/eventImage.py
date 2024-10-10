@@ -14,7 +14,7 @@ class EventImage(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
-    event = db.relationship('Event', back_populates='event_images')
+    events = db.relationship('Event', back_populates='event_images')
 
     def to_dict(self):
         return {

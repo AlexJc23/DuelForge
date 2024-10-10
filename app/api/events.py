@@ -30,3 +30,34 @@ def allEvents():
         events_list.append(event_dict)
 
     return jsonify(events_list)
+
+@event_routes.route('/<int:event_id>')
+def eventDetails(event_id):
+    event_fetch = db.session.query(Event).filter(Event.id == event_id).first()
+
+    if not event_fetch:
+        return {'error': 'Event does not exist'}, 404
+
+    event_dict = event_fetch.to_dict()
+
+    event_img_fetch = db.session.query(EventImage).filter(EventImage.event_id == event_id).first()
+
+    event_img = None
+
+    if not event_img_fetch:
+        event_img = []
+    else:
+        event_img = event_img_fetch.to_dict()
+
+
+    event_dict['image'] = event_img
+
+    event_owner_fetch = db.session.query(User).filter(User.id == event_fetch.owner_id).first()
+    event_owner_dict = {
+        'id': event_owner_fetch.id,
+        'username': event_owner_fetch.username
+    }
+
+    event_dict['event_owner'] = event_owner_dict
+
+    return jsonify(event_dict)

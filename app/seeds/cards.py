@@ -56,7 +56,7 @@ def seed_cardDeck():
 
 
     for index, card_data in enumerate(cards_data):
-        random_number = random.randrange(0, 31)
+        random_number = random.randrange(1, 31)
         if index >= 500:
             break
         info = DeckCard(

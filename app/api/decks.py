@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, redirect, request
 from app import db
-from app.models import Deck, Card, DeckCard, User, CardImage
+from app.models import Deck, Card, DeckCard, User, CardImage, Comment
 from flask_login import current_user, login_required
-from app.forms import DeckForm
+from app.forms import DeckForm, CommentForm
 
 decks_routes = Blueprint('decks', __name__)
 
@@ -12,6 +12,50 @@ def allDecks():
     GET ALL DECKS
     """
     decks = db.session.query(Deck).all()
+    decks_list = []
+
+    for deck in decks:
+        solo_deck = deck.to_dict()
+
+
+        decks_table = db.session.query(DeckCard).filter(DeckCard.deck_id == deck.id).all()
+
+
+        user = db.session.query(User).filter(User.id == deck.user_id).first().to_dict()
+
+        cards = []
+        for deck_card_association in decks_table:
+
+            card = db.session.query(Card).join(CardImage, Card.id == CardImage.card_id)\
+                        .filter(Card.id == deck_card_association.card_id).first()
+
+            if card:
+
+                card_dict = card.to_dict()
+
+
+                card_images = db.session.query(CardImage).filter(CardImage.card_id == card.id).all()
+                card_dict['images'] = [image.to_dict() for image in card_images]
+
+
+                cards.append(card_dict)
+
+
+        solo_deck['deck_owner'] = user
+        solo_deck['cards'] = cards
+
+        decks_list.append(solo_deck)
+
+    return jsonify(decks_list)
+
+@decks_routes.route('/current')
+def userDecks():
+    """
+    GET ALL DECKS for the current user that he has made
+    """
+    logged_in_user = current_user.to_dict()
+
+    decks = db.session.query(Deck).filter(logged_in_user['id'] == Deck.user_id).all()
     decks_list = []
 
     for deck in decks:
@@ -163,3 +207,122 @@ def removeDeck(deck_id):
         db.session.delete(deck_by_id)
         db.session.commit()
         return {'message': 'Deck was removed successfully'}, 200
+
+
+
+# comment section
+
+@decks_routes.route('/<int:deck_id>/comments')
+def allComments(deck_id):
+    """
+        Get all comments for speciifc deck
+    """
+    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
+
+
+    if not deck_by_id:
+        return {'error': 'Deck does not exist'}, 404
+
+    comments = db.session.query(Comment).all()
+
+    comments_list = []
+
+    for comment in comments:
+        comment_dict = comment.to_dict()
+
+        user_comment = db.session.query(User).filter(comment.owner_id == User.id).first()
+
+        user_info = {
+            'username': user_comment.username,
+            'image_url': user_comment.image_url
+        }
+        comment_dict['comment_owner'] = user_info
+
+        comments_list.append(comment_dict)
+
+    return jsonify(comments_list)
+
+@decks_routes.route('/<int:deck_id>/comments', methods=['POST'])
+@login_required
+def createComment(deck_id):
+
+    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
+
+    if not deck_by_id:
+        return {'error': 'Deck does not exist'}, 404
+
+    logged_in_user = current_user.to_dict()
+
+    form = CommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment = Comment(
+            deck_id=deck_id,
+            owner_id=logged_in_user['id'],
+            comment=form.data['comment']
+        )
+        db.session.add(comment)
+        db.session.commit()
+
+        new_comment = comment.to_dict()
+
+        return jsonify(new_comment)
+    return form.errors, 400
+
+@decks_routes.route('/<int:deck_id>/comments/<int:comment_id>', methods=['PUT'])
+@login_required
+def editComment(deck_id, comment_id):
+
+    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
+
+    if not deck_by_id:
+        return {'error': 'Deck does not exist'}, 404
+
+    comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
+
+    if not comment_by_id:
+        return {'error': 'Comment does not exist'}, 404
+
+    logged_in_user = current_user.to_dict()
+
+    if comment_by_id.owner_id != logged_in_user['id']:
+        return {'errors': 'Unauthorized to edit this deck'}, 403
+
+    form = CommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        if form.data.get('comment'):
+            comment_by_id.comment = form.data['comment']
+
+        db.session.commit()
+
+        updated_comment = comment_by_id.to_dict()
+
+        return jsonify(updated_comment)
+    return form.errors
+
+
+@decks_routes.route('/<int:deck_id>/comments/<int:comment_id>', methods=['DELETE'])
+@login_required
+def removeComment(deck_id, comment_id):
+
+    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
+
+    if not deck_by_id:
+        return {'error': 'Deck does not exist'}, 404
+
+    comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
+
+    if not comment_by_id:
+        return {'error': 'Comment does not exist'}, 404
+
+    logged_in_user = current_user.to_dict()
+
+    if comment_by_id.owner_id != logged_in_user['id']:
+        return {'errors': 'Unauthorized to edit this deck'}, 403
+    else:
+        db.session.delete(comment_by_id)
+        db.session.commit()
+
+        return {'message': "Comment deleted successfully."}

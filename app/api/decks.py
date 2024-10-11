@@ -118,6 +118,9 @@ def createDeck():
 @decks_routes.route('/<int:deck_id>', methods=['PUT'])
 @login_required
 def editDeck(deck_id):
+    """"
+        Edit a deck
+    """
     currentUser = current_user.to_dict()
 
     deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
@@ -152,13 +155,11 @@ def removeDeck(deck_id):
     deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
 
     if not deck_by_id:
-        return {'errors': 'Deck does not exist'}, 404
+        return {'error': 'Deck does not exist'}, 404
 
     if currentUser['id'] != deck_by_id.user_id:
-        return {'errors': 'Unauthorized to complete this action'}, 403
+        return {'error': 'Unauthorized to complete this action'}, 403
     else:
         db.session.delete(deck_by_id)
         db.session.commit()
-        return {'message': 'deck was removed successfully'}, 200
-
-
+        return {'message': 'Deck was removed successfully'}, 200

@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, redirect, request
 from app import db
 from app.models import Deck, Card, DeckCard, User, Event, EventImage, CardImage
 from flask_login import current_user, login_required
-
+from app.forms import EventForm
 
 event_routes = Blueprint('events', __name__)
 
@@ -61,3 +61,88 @@ def eventDetails(event_id):
     event_dict['event_owner'] = event_owner_dict
 
     return jsonify(event_dict)
+
+@event_routes.route('/', methods=['POST'])
+@login_required
+def createEvent():
+    """
+        Create an event
+    """
+    currentUser = current_user.to_dict()
+
+    form = EventForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        event = Event(
+            owner_id=currentUser['id'],
+            name=form.data['name'],
+            description=form.data['description'],
+            start_date=form.data['start_date'],
+            end_date=form.data['end_date'],
+            location=form.data['location'],
+            price=form.data['price']
+        )
+
+        db.session.add(event)
+        db.session.commit()
+        new_event = event.to_dict()
+        return jsonify(new_event)
+    return form.errors, 400
+
+
+@event_routes.route('/<int:event_id>', methods=['PUT'])
+@login_required
+def editEvent(event_id):
+    loggedin_user = current_user.to_dict()
+
+    event_by_id = db.session.query(Event).filter(Event.id == event_id).first()
+
+    if not event_by_id:
+        return {'errors': 'Event does not exist'}, 404
+
+    if event_by_id.owner_id != loggedin_user['id']:
+        return {'errors': 'Unauthorized to edit this deck'}, 403
+
+    form = EventForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        if form.data.get('name'):
+            event_by_id.name = form.data['name']
+        if form.data.get('description'):
+            event_by_id.description = form.data['description']
+        if form.data.get('start_date'):
+            event_by_id.start_date = form.data['start_date']
+        if form.data.get('end_date'):
+            event_by_id.end_date = form.data['end_date']
+        if form.data.get('location'):
+            event_by_id.location = form.data['location']
+        if form.data.get('price'):
+            event_by_id.price = form.data['price']
+
+        db.session.commit()
+
+        updated_event = event_by_id.to_dict()
+
+        return jsonify(updated_event)
+    return form.errors
+
+@event_routes.route('/<int:event_id>', methods=['DELETE'])
+@login_required
+def removeEvent(event_id):
+
+    loggedin_user = current_user.to_dict()
+
+    event_by_id = db.session.query(Event).filter(event_id == Event.id).first()
+
+    if not event_by_id:
+        return {'error': 'Event does not exist.'}, 404
+
+
+    if event_by_id.owner_id != loggedin_user['id']:
+        return {'errors': 'Unauthorized to edit this deck'}, 403
+    else:
+        db.session.delete(event_by_id)
+        db.session.commit()
+        return {'message': 'Event deleted successfully.'}

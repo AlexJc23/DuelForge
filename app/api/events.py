@@ -30,6 +30,31 @@ def allEvents():
         events_list.append(event_dict)
 
     return jsonify(events_list)
+@event_routes.route('/current')
+def userEvents():
+    """
+        GET ALL EVENTS
+    """
+    logged_in_user = current_user.to_dict()
+
+    events = db.session.query(Event).filter(logged_in_user['id'] == Event.owner_id).all()
+
+    events_list = []
+
+    for event in events:
+        event_dict = event.to_dict()
+
+        # corresponding images to event
+        event_image = db.session.query(EventImage).filter(event.id == EventImage.event_id).all()
+        image_dict = [image.to_dict() for image in event_image]
+        event_dict['image'] = image_dict
+
+        # owner info
+        user = db.session.query(User).filter(event.owner_id == User.id).first().to_dict()
+        event_dict['event_owner'] = user
+        events_list.append(event_dict)
+
+    return jsonify(events_list)
 
 @event_routes.route('/<int:event_id>')
 def eventDetails(event_id):
@@ -94,6 +119,9 @@ def createEvent():
 @event_routes.route('/<int:event_id>', methods=['PUT'])
 @login_required
 def editEvent(event_id):
+    """
+        Edit an event
+    """
     loggedin_user = current_user.to_dict()
 
     event_by_id = db.session.query(Event).filter(Event.id == event_id).first()
@@ -145,4 +173,5 @@ def removeEvent(event_id):
     else:
         db.session.delete(event_by_id)
         db.session.commit()
+        
         return {'message': 'Event deleted successfully.'}

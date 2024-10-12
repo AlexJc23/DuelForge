@@ -9,37 +9,54 @@ decks_routes = Blueprint('decks', __name__)
 @decks_routes.route('/')
 def allDecks():
     """
-    GET ALL DECKS
+    GET ALL DECKS with optional search queries
     """
-    decks = db.session.query(Deck).all()
+    # Get search parameters from query string
+    deck_name = request.args.get('deck_name', None)
+    owner_name = request.args.get('owner_name', None)
+    card_name = request.args.get('card_name', None)
+
+    # Start with querying all decks
+    query = db.session.query(Deck)
+
+    # Filter decks by deck name if provided
+    if deck_name:
+        query = query.filter(Deck.name.ilike(f'%{deck_name}%'))
+
+    decks = query.all()
     decks_list = []
 
     for deck in decks:
         solo_deck = deck.to_dict()
 
-
+        # Query the cards associated with the deck
         decks_table = db.session.query(DeckCard).filter(DeckCard.deck_id == deck.id).all()
 
-
+        # Query the deck owner
         user = db.session.query(User).filter(User.id == deck.user_id).first().to_dict()
+
+        # If owner_name is provided, filter by owner
+        if owner_name and owner_name.lower() not in user['username'].lower():
+            continue  # Skip this deck if owner doesn't match the search
 
         cards = []
         for deck_card_association in decks_table:
-
             card = db.session.query(Card).join(CardImage, Card.id == CardImage.card_id)\
                         .filter(Card.id == deck_card_association.card_id).first()
 
             if card:
 
+                # If card_name is provided, filter by card name
+                if card_name and card_name.lower() not in card.name.lower():
+                    continue  # Skip if the card doesn't match the search
+
                 card_dict = card.to_dict()
 
-
+                # Get all images for the card
                 card_images = db.session.query(CardImage).filter(CardImage.card_id == card.id).all()
                 card_dict['images'] = [image.to_dict() for image in card_images]
 
-
                 cards.append(card_dict)
-
 
         solo_deck['deck_owner'] = user
         solo_deck['cards'] = cards
@@ -47,6 +64,7 @@ def allDecks():
         decks_list.append(solo_deck)
 
     return jsonify(decks_list)
+
 
 @decks_routes.route('/current')
 def userDecks():

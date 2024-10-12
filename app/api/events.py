@@ -10,26 +10,48 @@ event_routes = Blueprint('events', __name__)
 @event_routes.route('/')
 def allEvents():
     """
-        GET ALL EVENTS
+    GET ALL EVENTS with optional search queries
     """
-    events = db.session.query(Event).all()
+    # Get search parameters from query string
+    event_name = request.args.get('event_name', None)
+    owner_name = request.args.get('owner_name', None)
+    location = request.args.get('location', None)
 
+    # Start with querying all events
+    query = db.session.query(Event)
+
+    # Filter events by event name if provided
+    if event_name:
+        query = query.filter(Event.name.ilike(f'%{event_name}%'))
+
+    # Filter events by location if provided
+    if location:
+        query = query.filter(Event.location.ilike(f'%{location}%'))
+
+    events = query.all()
     events_list = []
 
     for event in events:
         event_dict = event.to_dict()
 
-        # corresponding images to event
-        event_image = db.session.query(EventImage).filter(event.id == EventImage.event_id).all()
-        image_dict = [image.to_dict() for image in event_image]
-        event_dict['image'] = image_dict
+        # Query the images associated with the event
+        event_images = db.session.query(EventImage).filter(event.id == EventImage.event_id).all()
+        image_dict = [image.to_dict() for image in event_images]
+        event_dict['images'] = image_dict
 
-        # owner info
+        # Query the event owner
         user = db.session.query(User).filter(event.owner_id == User.id).first().to_dict()
+
+        # If owner_name is provided, filter by owner's username
+        if owner_name and owner_name.lower() not in user['username'].lower():
+            continue  # Skip this event if owner doesn't match the search
+
         event_dict['event_owner'] = user
         events_list.append(event_dict)
 
     return jsonify(events_list)
+
+
 @event_routes.route('/current')
 def userEvents():
     """
@@ -173,5 +195,5 @@ def removeEvent(event_id):
     else:
         db.session.delete(event_by_id)
         db.session.commit()
-        
+
         return {'message': 'Event deleted successfully.'}

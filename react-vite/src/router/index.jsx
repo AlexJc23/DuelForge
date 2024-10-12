@@ -6,6 +6,7 @@ import Layout from './Layout';
 import AllDecksPage from '../components/AllDecksPage/AllDecksPage';
 import DeckDetails from '../components/DeckDetails/DeckDetails';
 import LoggedinUserContent from '../components/LoggedinUserContent/LoggedinUserContent';
+import AllEvents from '../components/AllEventsPage/AllEvents';
 
 export const router = createBrowserRouter([
   {
@@ -38,11 +39,21 @@ export const router = createBrowserRouter([
             path: ':deck_id',
             element: <DeckDetails />
           },
+
+        ]
+      },
+      {
+        path: 'events',
+        children: [
           {
-            path: 'userpage',
-            element: <LoggedinUserContent />
+            path: '',
+            element: <AllEvents />
           }
         ]
+      },
+      {
+        path: 'userpage',
+        element: <LoggedinUserContent />
       }
     ],
   },

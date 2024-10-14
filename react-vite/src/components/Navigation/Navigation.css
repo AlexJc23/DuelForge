@@ -1,3 +1,25 @@
 .profile-dropdown {
   position: absolute;
+  right: 4%;
+  top: 10%;
+  background-color: white;
+}
+
+.logo {
+  width: 12rem;
+  height: auto;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+.navbar li{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 40px;
+  list-style: none;
 }

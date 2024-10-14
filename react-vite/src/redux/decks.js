@@ -194,6 +194,15 @@ function decksReducer(state = initialState, action) {
                     [newDeck.id]: newDeck
                 }
             }
+        case EDIT_DECK:
+            const updatedDeck = action.payload;
+            return {
+                ...state,
+                allDecks: {
+                    ...state.allDecks,
+                    [updatedDeck.id]:updatedDeck
+                }
+            }
         case DELETE_DECK: {
             const new_state = structuredClone(state)
             delete new_state.allDecks[action.deck_id]

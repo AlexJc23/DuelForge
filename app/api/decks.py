@@ -241,7 +241,7 @@ def allComments(deck_id):
     if not deck_by_id:
         return {'error': 'Deck does not exist'}, 404
 
-    comments = db.session.query(Comment).all()
+    comments = db.session.query(Comment).filter(Comment.deck_id == deck_id).all()
 
     comments_list = []
 
@@ -263,6 +263,9 @@ def allComments(deck_id):
 @decks_routes.route('/<int:deck_id>/comments', methods=['POST'])
 @login_required
 def createComment(deck_id):
+    """"
+        Create a comment
+    """
 
     deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
 

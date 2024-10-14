@@ -8,11 +8,14 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import decksReducer from "./decks";
 import eventsReducer from "./events";
+import commentReducer from "./comments";
+
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   decksReducer,
-  eventsReducer
+  eventsReducer,
+  commentReducer,
 });
 
 let enhancer;

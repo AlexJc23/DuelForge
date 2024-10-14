@@ -10,7 +10,7 @@ class EventImage(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('events.id'), ondelete='CASCADE'), nullable=False)
-    image_url = db.Column(db.String(100), nullable=False)
+    image_url = db.Column(db.String(400), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 

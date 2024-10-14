@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 02c26426e3c6
+Revision ID: 6e9ea9494ae0
 Revises: 
-Create Date: 2024-10-10 23:23:07.375778
+Create Date: 2024-10-14 18:39:14.857217
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '02c26426e3c6'
+revision = '6e9ea9494ae0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -103,7 +103,7 @@ def upgrade():
     op.create_table('event_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('event_id', sa.Integer(), nullable=False),
-    sa.Column('image_url', sa.String(length=100), nullable=False),
+    sa.Column('image_url', sa.String(length=400), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['events.id'], ondelete='CASCADE'),

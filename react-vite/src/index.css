@@ -1,4 +1,11 @@
-/* TODO: Add sitewide styles */
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+  font-family: "Orbitron", sans-serif;
+
+}
+
 body {
-    background-color: cornflowerblue
+    background-color: #111111;
 }

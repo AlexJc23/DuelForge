@@ -6,6 +6,7 @@ import Layout from './Layout';
 import AllDecksPage from '../components/AllDecksPage/AllDecksPage';
 import DeckDetails from '../components/DeckDetails/DeckDetails';
 import LoggedinUserContent from '../components/LoggedinUserContent/LoggedinUserContent';
+import Landing from '../components/LandingPage';
 import AllEvents from '../components/AllEventsPage/AllEvents';
 
 export const router = createBrowserRouter([
@@ -14,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <Landing />,
       },
       {
         path: "login",

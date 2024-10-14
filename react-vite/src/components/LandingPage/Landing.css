@@ -1,0 +1,28 @@
+
+
+#particles canvas{
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+#landing-txt {
+
+    width: 700px;
+    height: 400px;
+    /* margin: 4rem auto; */
+
+    margin: 140px auto;
+
+    border: 2px solid rgba(255, 255, 255, 0.039);
+		background: #90c3be39;
+		border-radius: 10px;
+		z-index: 2;
+		overflow: hidden;
+		backdrop-filter: blur(2px);
+  	-webkit-backdrop-filter: blur(2px);
+}
+.wrapper {
+    /* text-align: center; */
+    /* margin: 20% auto; */
+}

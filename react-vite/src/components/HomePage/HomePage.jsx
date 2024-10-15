@@ -7,13 +7,13 @@ import './HomePage.css';
 import { getEvents } from "../../redux/events";
 
 const HomePage = () => {
-    const dispatch = useDispatch();
     const decks = useSelector(state => state.decksReducer.allDecks);
     const allDecks = decks ? Object.values(decks) : [];
 
     const events = useSelector(state => state.eventsReducer.allEvents)
     const allEvents = events ? Object.values(events) : [];
 
+    const dispatch = useDispatch();
 
     // Function to get random decks
     const getRandomStuff = (decksArray, numberOfDecks) => {

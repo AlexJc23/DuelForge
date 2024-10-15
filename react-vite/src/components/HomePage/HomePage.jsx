@@ -39,15 +39,15 @@ const HomePage = () => {
     // loading screen
 
 
-    return !allDecks.length > 0 ? (<div id="loading"><h1 className='loading'>
-    <span class="let1">l</span>
-    <span class="let2">o</span>
-    <span class="let3">a</span>
-    <span class="let4">d</span>
-    <span class="let5">i</span>
-    <span class="let6">n</span>
-    <span class="let7">g</span>
-</h1></div>): (
+    return allDecks.length === 0 ? (<div id="loading"><h1 className='loading'>
+                <span class="let1">l</span>
+                <span class="let2">o</span>
+                <span class="let3">a</span>
+                <span class="let4">d</span>
+                <span class="let5">i</span>
+                <span class="let6">n</span>
+                <span class="let7">g</span>
+            </h1></div>): (
         <div className="home-content">
             <div className="deck-featured">
                 <h3 >Featured Decks <span className="featured-line" ></span></h3>

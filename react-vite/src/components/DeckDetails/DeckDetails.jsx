@@ -19,9 +19,13 @@ const DeckDetails = () => {
     }, [dispatch, deck_id])
 
     return (
-        <>
-        <h1>Hello! Deck details is coming soon</h1>
-        </>
+        <div className="details-body">
+            <div>
+                <div>
+                    <button onClick={handleGoBack}><FaArrowLeftLong style={{marginRight: '5px'}}/> Back to Listings</button>
+                </div>
+            </div>
+        </div>
     )
 }
 

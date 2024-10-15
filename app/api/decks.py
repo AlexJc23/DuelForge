@@ -67,6 +67,7 @@ def allDecks():
 
 
 @decks_routes.route('/current')
+@login_required
 def userDecks():
     """
     GET ALL DECKS for the current user that he has made

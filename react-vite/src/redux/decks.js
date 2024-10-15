@@ -36,10 +36,10 @@ const addDeck = (deck) => ({
 })
 
 // Edit a deck
-const updateDeck = (deck) => {
+const updateDeck = (deck) => ({
     type: EDIT_DECK,
     deck
-}
+})
 
 // remove a deck
 const removeDeck = (deck_id) => ({
@@ -102,14 +102,19 @@ export const createDeck = (deck) => async (dispatch) => {
             body: JSON.stringify(newDeck)
         });
     } catch (error) {
-        return error.json();
+        if (error.json) {
+            return error.json();  // Safely handle errors that have JSON response
+        } else {
+            return { error: "An unexpected error occurred" };
+        }
     }
 
     const data = await res.json();
 
     dispatch(addDeck(data));
     return res;
-}
+};
+
 
 // Edit a deck by id
 export const EditADeck = (deck, deck_id) => async (dispatch) => {
@@ -140,7 +145,7 @@ export const EditADeck = (deck, deck_id) => async (dispatch) => {
 
 
 export const deleteDeck = (deck_id) => async (dispatch) => {
-    const res = await csrfFetch(`/api/decks${deck_id}`, {
+    const res = await csrfFetch(`/api/decks/${deck_id}`, {
         method: 'DELETE'
     });
 
@@ -185,8 +190,8 @@ function decksReducer(state = initialState, action) {
                 userDecks
             }
         }
-        case ADD_DECK:
-            const newDeck = action.payload;
+        case ADD_DECK: {
+            const newDeck = action.deck;  
             return {
                 ...state,
                 allDecks: {
@@ -194,20 +199,24 @@ function decksReducer(state = initialState, action) {
                     [newDeck.id]: newDeck
                 }
             }
-        case EDIT_DECK:
-            const updatedDeck = action.payload;
+        }
+
+        case EDIT_DECK: {
+            const updatedDeck = action.deck;  // Use action.deck
             return {
                 ...state,
                 allDecks: {
                     ...state.allDecks,
-                    [updatedDeck.id]:updatedDeck
+                    [updatedDeck.id]: updatedDeck
                 }
             }
-        case DELETE_DECK: {
-            const new_state = structuredClone(state)
-            delete new_state.allDecks[action.deck_id]
-            return new_state
         }
+        case DELETE_DECK: {
+            const newState = { ...state, allDecks: { ...state.allDecks } };
+            delete newState.allDecks[action.deck_id];
+            return newState;
+        }
+
 
         default:
             return state

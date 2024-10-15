@@ -16,7 +16,7 @@ const HomePage = () => {
 
 
     // Function to get random decks
-    const getRandomStuff = (decksArray, numberOfDecks = 4) => {
+    const getRandomStuff = (decksArray, numberOfDecks) => {
         const copyDecksArray = [...decksArray];
         for (let i = copyDecksArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -26,8 +26,8 @@ const HomePage = () => {
     };
 
     // Get 3 random decks
-    const randomDecks = getRandomStuff(allDecks);
-    const randomEvents = getRandomStuff(allEvents)
+    const randomDecks = getRandomStuff(allDecks, 4);
+    const randomEvents = getRandomStuff(allEvents, 3)
     console.log(randomEvents)
 
     // Dispatch action to fetch decks on component mount
@@ -71,15 +71,32 @@ const HomePage = () => {
                             <p style={{marginTop: '19px', marginLeft: '16px'}}>{successfulDeck.name}</p>
                         </NavLink>
                     ))}
-                    <div style={{}} class="glow-on-hover">
-                    <NavLink to={'/decks'} class="view-btn">View all Decks <FaArrowRight/></NavLink>
+                    <div  class="glow-on-hover2">
+                    <NavLink style={{width:'400px', height:'150px'}} to={'/decks'} class="glow-on-hover2">All Decks <FaArrowRight/></NavLink>
 
                     </div>
                 </ul>
             </div>
             <div className="event-featured">
-                <h3 >Featured Decks <span className="featured-line" ></span></h3>
+                <h3>Featured Events <span className="featured-line"></span></h3>
+                <div className="event-cards">
+                    {randomEvents.map((successfulEvent) => (
+                        <NavLink key={successfulEvent.id} to={`/events/${successfulEvent.id}`}>
+                            <div className="cards">
+                                <img className="event-img" src={successfulEvent.images[0].image_url} alt={successfulEvent.name} />
+                                <div className="info">
+                                    <h4 style={{color:'#00bfff', fontWeight:'800', fontSize:'1rem'}}>{successfulEvent.name}</h4>
+                                    <p>{successfulEvent.description}</p>
+                                    <p style={{marginTop:'20px'}}>${successfulEvent.price.toFixed(2)}</p>
+                                </div>
+                            </div>
+                        </NavLink>
+                    ))}
+                    <div class="glow-on-hover2">
+                    <NavLink class="glow-on-hover2" style={{ width:'400px', height:'150px'}} to={'/decks'}>All Events <FaArrowRight /></NavLink>
 
+                    </div>
+                </div>
             </div>
         </div>
     );

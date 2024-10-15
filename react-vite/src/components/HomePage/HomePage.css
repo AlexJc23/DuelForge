@@ -135,7 +135,6 @@
     }
 }
 
-
 .view-container {
     display: flex;
     align-items: center;
@@ -151,7 +150,7 @@
 
   .featured-line {
     display: inline-block;  /* Ensures the line is only as wide as the text */
-    width: 85%;           /* Full width */
+    width: 82%;           /* Full width */
     height: 2px;          /* Thickness of the line */
     background-color: #c7c7c728; /* Color of the line */
     margin-bottom: 4px;      /* Space between the text and the line */
@@ -160,7 +159,7 @@
 
 
 /* button */
-.glow-on-hover {
+.glow-on-hover2 {
     align-self: flex-end;
     width: 150px;
     height: 50px;
@@ -172,17 +171,22 @@
     position: relative;
     z-index: 0;
     border-radius: 10px;
-
+    display: flex;
     padding: 60px;
-}
-.glow-on-hover a{
+    align-items: center;
+    justify-content: center;
 
+}
+.glow-on-hover2 a{
     color: white;
     text-decoration: none;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 100px;
 }
 
-.glow-on-hover:before {
+.glow-on-hover2:before {
     content: '';
     background: linear-gradient(45deg, #0f5167, #00bfff, #98def5, #ecf5f8, #3899b9, #6c8990);
     position: absolute;
@@ -200,19 +204,19 @@
 
 }
 
-.glow-on-hover:active {
+.glow-on-hover2:active {
     color: #000
 }
 
-.glow-on-hover:active:after {
+.glow-on-hover2:active:after {
     background: transparent;
 }
 
-.glow-on-hover:hover:before {
+.glow-on-hover2:hover:before {
     opacity: 1;
 }
 
-.glow-on-hover:after {
+.glow-on-hover2:after {
     z-index: -1;
     content: '';
     position: absolute;
@@ -228,4 +232,52 @@
     0% { background-position: 0 0; }
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
+}
+
+/* event card */
+
+.event-cards {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.cards {
+    position: relative; /* Enable absolute positioning of child elements */
+    width: 250px; /* Set a fixed width for the cards */
+    height: auto; /* Set a fixed height for the cards */
+    overflow: hidden; /* Hide overflow for a cleaner look */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.event-img {
+    object-fit: cover;
+    width: 250px; /* Adjust to full width */
+    height: 170px; /* Maintain aspect ratio */
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.info {
+    position: absolute; /* Position info over the image */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.867); /* Semi-transparent background */
+    color: white; /* White text for contrast */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-flow: column wrap;
+    text-align: center;
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.cards:hover .info {
+    opacity: 1; /* Show info on hover */
 }

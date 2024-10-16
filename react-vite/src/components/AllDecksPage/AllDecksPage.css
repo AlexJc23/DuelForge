@@ -1,0 +1,45 @@
+.decks-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+
+}
+
+.decks-container {
+    display: flex;
+    flex-flow: column wrap;
+    width: 80%;
+    margin: 0 auto;
+
+}
+.decks-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 110px;
+    margin: 50px;
+    justify-content: start;
+    align-items: center;
+
+
+}
+.decks-container li {
+    position: relative;
+    align-items: center;
+    text-align: center;
+}
+
+.decks-container .card {
+    position: relative;
+    width: 120px; 
+    height: 150px; 
+    transition: transform 0.3s ease-in-out;
+
+    text-align: center;
+}
+.card {
+    text-align: center;
+}

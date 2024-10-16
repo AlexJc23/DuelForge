@@ -14,7 +14,7 @@ const DeckDetails = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [isLoading, setIsLoading] = useState(true); // State to manage loading
+    const [isLoading, setIsLoading] = useState(true);
     const [showMenu, setShowMenu] = useState(false);
     const deckDetails = useSelector((state) => state.decksReducer.deckDetail.deck);
     const user = useSelector((state) => state.session.user);
@@ -23,23 +23,23 @@ const DeckDetails = () => {
         const fetchData = async () => {
             await dispatch(getOneDeck(deck_id));
             await dispatch(getComments(deck_id));
-            setIsLoading(false); // Set loading to false once data is fetched
+            setIsLoading(false);
         };
 
         fetchData();
     }, [dispatch, deck_id]);
 
     const handleGoBack = () => {
-        navigate(-1);  // Navigate to the previous page in the browser's history
+        navigate(-1);
     };
 
     const deckCards = deckDetails?.cards || [];
 
 
     if (!deckDetails && isLoading) {
-        return <DeckNotFound />; // Show the "Deck Not Found" page if deckDetails is undefined or null
+        return <DeckNotFound />;
     }
-    // Conditional rendering based on loading state and deck existence
+
     if (isLoading) {
         return (
             <div id="loading">
@@ -77,7 +77,7 @@ const DeckDetails = () => {
                 <div className="details-left">
                     {deckCards.length > 0 ? (
                         deckCards.map((card) => (
-                            // <img key={card.id} className="details-card" src={card.image.image_url} alt="Card Image" />
+
                             <OpenModalMenuItem
                             itemText= {<img key={card.id} className="details-card" src={card.image.image_url} alt="Card Image" />}
                             onItemClick={() => setShowMenu(false)}

@@ -1,10 +1,12 @@
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 
 const DeckNotFound = () => {
+    const navigate = useNavigate()
 
     const handleGoBack = () => {
-        navigate(-1);  // Navigate to the previous page in the browser's history
+        navigate(-1);  
     };
 
     return (

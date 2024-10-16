@@ -36,7 +36,7 @@ const HomePage = () => {
         dispatch(getEvents())
     }, [dispatch]);
 
-    // loading screen
+
 
 
     return allDecks.length === 0 ? (<div id="loading"><h1 className='loading'>
@@ -56,7 +56,6 @@ const HomePage = () => {
                         <NavLink key={successfulDeck.id} to={`/decks/${successfulDeck.id}`} className="bubbles">
                             {successfulDeck.cards && successfulDeck.cards.length > 0 && successfulDeck.cards[0].images.length > 0 ? (
                                 <div className="card">
-                                    {/* Displaying overlapping deck images */}
                                     <img className="deck-img image1" src={successfulDeck.cards[0].images[0].image_url} alt="deck card 1" />
                                     {successfulDeck.cards[1] && (
                                         <img className="deck-img image2" src={successfulDeck.cards[1].images[0].image_url} alt="deck card 2" />

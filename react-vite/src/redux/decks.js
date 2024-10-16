@@ -47,17 +47,29 @@ const removeDeck = (deck_id) => ({
     deck_id
 })
 
-// get all decks
-export const getDecks = () => async (dispatch) => {
-    const res = await csrfFetch('/api/decks');
+
+// get all decks with optional search queries
+export const getDecks = (searchParams = {}) => async (dispatch) => {
+    // Destructure the search parameters
+    const { deck_name, owner_name, card_name } = searchParams;
+
+    // Build query string
+    const query = new URLSearchParams();
+    if (deck_name) query.append("deck_name", deck_name);
+    if (owner_name) query.append("owner_name", owner_name);
+    if (card_name) query.append("card_name", card_name);
+
+    // Make the request with query parameters
+    const res = await csrfFetch(`/api/decks?${query.toString()}`);
 
     if (res.ok) {
         const data = await res.json();
-        dispatch(loadDecks(data));
-        return data
-    };
+        dispatch(loadDecks(data)); // Dispatch the action to load decks
+        return data;
+    }
     return res;
 };
+
 
 
 // get one deck details
@@ -191,7 +203,7 @@ function decksReducer(state = initialState, action) {
             }
         }
         case ADD_DECK: {
-            const newDeck = action.deck;  
+            const newDeck = action.deck;
             return {
                 ...state,
                 allDecks: {

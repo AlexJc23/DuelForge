@@ -1,12 +1,20 @@
-import { NavLink, useLocation } from "react-router-dom"; // Import useLocation
+import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import ProfileButton from "./ProfileButton";
+import { useState } from 'react';
 import "./Navigation.css";
 
 function Navigation() {
-  const location = useLocation(); // Get current location
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Check if the current path is either /decks or /events
-  const showSearchBar = location.pathname === "/decks/" || location.pathname === "/events";
+  const showSearchBar = location.pathname === "/decks" || location.pathname === "/events";
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Navigate to /decks with query params
+    navigate(`/decks?search=${encodeURIComponent(searchTerm)}`);
+  };
 
   return (
     <ul className="navbar">
@@ -15,11 +23,18 @@ function Navigation() {
           <img className='logo' src="/logo.svg" alt="duelforge logo" />
         </NavLink>
       </li>
-      {/* Conditionally render the search bar based on the current path */}
+
       {showSearchBar && (
         <li className="searchbar">
-          {/* Your search bar component or input goes here */}
-          <input type="text" placeholder="Search..." />
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search decks..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+  
+          </form>
         </li>
       )}
       <li>

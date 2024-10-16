@@ -34,8 +34,8 @@
 
 .deck-featured .card {
     position: relative;
-    width: 120px; /* Adjust width to fit card images */
-    height: 150px; /* Adjust height to fit card images */
+    width: 120px; 
+    height: 150px; 
     transition: transform 0.3s ease-in-out;
 }
 
@@ -149,11 +149,11 @@
 
 
   .featured-line {
-    display: inline-block;  /* Ensures the line is only as wide as the text */
-    width: 82%;           /* Full width */
-    height: 2px;          /* Thickness of the line */
-    background-color: #c7c7c728; /* Color of the line */
-    margin-bottom: 4px;      /* Space between the text and the line */
+    display: inline-block;
+    width: 82%;
+    height: 2px;
+    background-color: #c7c7c728;
+    margin-bottom: 4px;
 
 }
 
@@ -244,40 +244,40 @@
 }
 
 .cards {
-    position: relative; /* Enable absolute positioning of child elements */
-    width: 250px; /* Set a fixed width for the cards */
-    height: auto; /* Set a fixed height for the cards */
-    overflow: hidden; /* Hide overflow for a cleaner look */
+    position: relative;
+    width: 250px;
+    height: auto;
+    overflow: hidden;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
 }
 
 .event-img {
     object-fit: cover;
-    width: 250px; /* Adjust to full width */
-    height: 170px; /* Maintain aspect ratio */
+    width: 250px;
+    height: 170px;
     border-radius: 5px;
     margin-top: 5px;
 }
 
 .info {
-    position: absolute; /* Position info over the image */
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     gap: 10px;
-    background-color: rgba(0, 0, 0, 0.867); /* Semi-transparent background */
-    color: white; /* White text for contrast */
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    background-color: rgba(0, 0, 0, 0.867);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-flow: column wrap;
     text-align: center;
-    opacity: 0; /* Start hidden */
-    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .cards:hover .info {
-    opacity: 1; /* Show info on hover */
+    opacity: 1;
 }

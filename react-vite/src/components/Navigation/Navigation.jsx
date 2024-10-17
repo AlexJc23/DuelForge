@@ -14,6 +14,7 @@ function Navigation() {
     e.preventDefault();
     // Navigate to /decks with query params
     navigate(`/decks?search=${encodeURIComponent(searchTerm)}`);
+    setSearchTerm("")
   };
 
   return (
@@ -33,7 +34,7 @@ function Navigation() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-  
+
           </form>
         </li>
       )}

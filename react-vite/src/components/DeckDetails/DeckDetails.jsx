@@ -19,15 +19,6 @@ const DeckDetails = () => {
     const deckDetails = useSelector((state) => state.decksReducer.deckDetail.deck);
     const user = useSelector((state) => state.session.user);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await dispatch(getOneDeck(deck_id));
-            await dispatch(getComments(deck_id));
-            setIsLoading(false);
-        };
-
-        fetchData();
-    }, [dispatch, deck_id]);
 
     const handleGoBack = () => {
         navigate(-1);
@@ -35,26 +26,43 @@ const DeckDetails = () => {
 
     const deckCards = deckDetails?.cards || [];
 
+    useEffect(() => {
+    const fetchData = async () => {
+        try {
+            await dispatch(getOneDeck(deck_id));
+            await dispatch(getComments(deck_id));
+        } catch (error) {
+            console.error("Error fetching deck details:", error);
+        } finally {
+            setIsLoading(false); // Make sure isLoading is set to false even if there's an error
+        }
+    };
 
-    if (!deckDetails && isLoading) {
-        return <DeckNotFound />;
-    }
+    fetchData();
+}, [dispatch, deck_id]);
 
-    if (isLoading) {
-        return (
-            <div id="loading">
-                <h1 className='loading'>
-                    <span className="let1">l</span>
-                    <span className="let2">o</span>
-                    <span className="let3">a</span>
-                    <span className="let4">d</span>
-                    <span className="let5">i</span>
-                    <span className="let6">n</span>
-                    <span className="let7">g</span>
-                </h1>
-            </div>
-        );
-    }
+// Return loading screen when loading
+if (isLoading) {
+    return (
+        <div id="loading">
+            <h1 className='loading'>
+                <span className="let1">l</span>
+                <span className="let2">o</span>
+                <span className="let3">a</span>
+                <span className="let4">d</span>
+                <span className="let5">i</span>
+                <span className="let6">n</span>
+                <span className="let7">g</span>
+            </h1>
+        </div>
+    );
+}
+
+// Show DeckNotFound if deckDetails is null or undefined
+if (!deckDetails) {
+    return <DeckNotFound />;
+}
+
 
     return (
         <div className="details-body">

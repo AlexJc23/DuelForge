@@ -27,8 +27,13 @@ def allEvents():
     # Filter events by location if provided
     if location:
         query = query.filter(Event.location.ilike(f'%{location}%'))
+        print(f"Filtering by location: {location}")  # Debug: log location filter
 
     events = query.all()
+
+    if not events:
+        print("No events found with the applied filters.")  # Debug: log if no events found
+
     events_list = []
 
     for event in events:
@@ -50,6 +55,7 @@ def allEvents():
         events_list.append(event_dict)
 
     return jsonify(events_list)
+
 
 
 @event_routes.route('/current')

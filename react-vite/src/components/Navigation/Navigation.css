@@ -29,11 +29,12 @@
   align-items: center;
   justify-content: center;
   padding: 10px;
-  width: 400px;
+  width: 500px;
 }
 
 .searchbar input {
   padding: 10px;
+  width: 400px;
   border: none;
   border-radius: 20px;
   background-color: #0a0a0a;

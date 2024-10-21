@@ -8,6 +8,7 @@ import DeckDetails from '../components/DeckDetails/DeckDetails';
 import LoggedinUserContent from '../components/LoggedinUserContent/LoggedinUserContent';
 import Landing from '../components/LandingPage';
 import AllEvents from '../components/AllEventsPage/AllEvents';
+import EventDetails from '../components/EventDetails/EventDetails';
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
           {
             path: '',
             element: <AllEvents />
+          },
+          {
+            path: ':event_id',
+            element: <EventDetails />
           }
         ]
       },

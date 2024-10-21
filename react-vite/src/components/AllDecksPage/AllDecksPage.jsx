@@ -19,7 +19,7 @@ const AllDecksPage = () => {
     const getSearchQuery = (param) => {
         const searchParams = new URLSearchParams(location.search);
         return searchParams.get(param) || '';
-    }
+    };
 
     const searchTerm = getSearchQuery('search');
 

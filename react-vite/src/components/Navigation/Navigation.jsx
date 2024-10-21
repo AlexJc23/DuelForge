@@ -9,11 +9,18 @@ function Navigation() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const showSearchBar = location.pathname === "/decks" || location.pathname === "/events";
+  let path;
+
+  if(location.pathname === '/decks') {
+    path = `/decks?search=${encodeURIComponent(searchTerm)}`
+  } else if ( location.pathname === '/events' ){
+    path = `/events?search=${encodeURIComponent(searchTerm)}`
+  }
 
   const handleSearch = (e) => {
     e.preventDefault();
     // Navigate to /decks with query params
-    navigate(`/decks?search=${encodeURIComponent(searchTerm)}`);
+    navigate(path);
     setSearchTerm("")
   };
 
@@ -30,7 +37,7 @@ function Navigation() {
           <form onSubmit={handleSearch}>
             <input
               type="text"
-              placeholder="Search decks..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

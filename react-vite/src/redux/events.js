@@ -48,9 +48,17 @@ const removeEvent = (event_id) => ({
 })
 
 // get all events
-export const getEvents = () => async (dispatch) => {
-    const res = await csrfFetch('/api/events');
+export const getEvents = (searchParams = {}) => async (dispatch) => {
+    // Destructure the search params
+    const { event_name, owner_name, location} = searchParams;
 
+    const query = new URLSearchParams();
+
+    if(event_name) query.append('event_name', event_name);
+    if(owner_name) query.append('owner_name', owner_name);
+    if(location) query.append('location', location)
+
+    const res = await csrfFetch(`/api/events?${query.toString()}`)
     if (res.ok) {
         const data = await res.json();
         dispatch(loadEvent(data));

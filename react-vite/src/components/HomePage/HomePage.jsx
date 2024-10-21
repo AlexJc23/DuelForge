@@ -40,13 +40,13 @@ const HomePage = () => {
 
 
     return allDecks.length === 0 ? (<div id="loading"><h1 className='loading'>
-                <span class="let1">l</span>
-                <span class="let2">o</span>
-                <span class="let3">a</span>
-                <span class="let4">d</span>
-                <span class="let5">i</span>
-                <span class="let6">n</span>
-                <span class="let7">g</span>
+                <span className="let1">l</span>
+                <span className="let2">o</span>
+                <span className="let3">a</span>
+                <span className="let4">d</span>
+                <span className="let5">i</span>
+                <span className="let6">n</span>
+                <span className="let7">g</span>
             </h1></div>): (
         <div className="home-content">
             <div className="deck-featured">
@@ -92,7 +92,7 @@ const HomePage = () => {
                         </NavLink>
                     ))}
                     <div class="glow-on-hover2">
-                    <NavLink class="glow-on-hover2" style={{ width:'400px', height:'150px'}} to={'/decks'}>All Events <FaArrowRight /></NavLink>
+                    <NavLink class="glow-on-hover2" style={{ width:'400px', height:'150px'}} to={'/events'}>All Events <FaArrowRight /></NavLink>
 
                     </div>
                 </div>

@@ -16,6 +16,7 @@ const DeckDetails = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [showMenu, setShowMenu] = useState(false);
+
     const deckDetails = useSelector((state) => state.decksReducer.deckDetail.deck);
     const user = useSelector((state) => state.session.user);
 
@@ -34,14 +35,14 @@ const DeckDetails = () => {
         } catch (error) {
             console.error("Error fetching deck details:", error);
         } finally {
-            setIsLoading(false); // Make sure isLoading is set to false even if there's an error
+            setIsLoading(false);
         }
     };
 
     fetchData();
 }, [dispatch, deck_id]);
 
-// Return loading screen when loading
+
 if (isLoading) {
     return (
         <div id="loading">
@@ -58,7 +59,7 @@ if (isLoading) {
     );
 }
 
-// Show DeckNotFound if deckDetails is null or undefined
+
 if (!deckDetails) {
     return <DeckNotFound />;
 }

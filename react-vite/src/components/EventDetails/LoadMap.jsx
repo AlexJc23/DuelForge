@@ -11,15 +11,16 @@ const mapContainerStyle = {
 };
 
 const LoadMap = ({ address }) => {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyDQBxGOJQFXaGF2KBm2WMXDvQILFWL2B_I',
-    libraries,
-  });
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey: 'AIzaSyDQBxGOJQFXaGF2KBm2WMXDvQILFWL2B_I',
+        libraries,
+      });
 
   const [center, setCenter] = useState({
     lat: 7.2905715, // default latitude
     lng: 80.6337262, // default longitude
   });
+
 
 
   const getCoordinates = async (address) => {

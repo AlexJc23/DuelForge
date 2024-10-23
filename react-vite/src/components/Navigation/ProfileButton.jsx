@@ -6,6 +6,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import { IoMdClose } from "react-icons/io";
 import SignupFormModal from "../SignupFormModal";
+import { NavLink } from "react-router-dom";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -53,6 +54,8 @@ function ProfileButton() {
           <>
             <li>{user.username}</li>
             <li>{user.email}</li>
+            <li><NavLink style={{color: 'black'}} to={'/events/create'}>Create Event</NavLink></li>
+            <li><NavLink style={{color: 'black'}} to={'/decks/create'}>Create Deck</NavLink></li>
             <li>
               <button onClick={logout}>Log Out</button>
             </li>

@@ -30,9 +30,9 @@ const loadUserEvents = (events) => ({
 
 
 // add a event
-const addEvent = (event) => ({
+const addEvent = (payload) => ({
     type:ADD_EVENT,
-    event
+    payload
 })
 
 // Edit a event
@@ -96,7 +96,9 @@ export const loggedInUserEvent = () =>  async (dispatch) => {
 
 // add event
 export const createEvent = (event) => async (dispatch) => {
-    let res;
+
+    let res, data;
+
     let newEvent = {
         owner_id: event.owner_id,
         name: event.name,
@@ -105,28 +107,71 @@ export const createEvent = (event) => async (dispatch) => {
         end_date: event.end_date,
         location: event.location,
         price: event.price
-    }
+    };
 
     try {
-        res = await csrfFetch('/api/events/', {
+        // Create the event
+        res = await csrfFetch('/api/events', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newEvent)
         });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+
+            throw new Error("Failed to create event");
+        }
+
+        // Parse response
+        data = await res.json();
+        if (!data || !data.id) {
+            console.error("Error: 'data' is undefined or missing 'id'. Response:", data);
+            return { error: "Event creation failed." };
+        }
+
     } catch (error) {
-        return error.json();
+
+        return { error: error.message };
     }
 
-    const data = await res.json();
 
+
+    // If event was created, attempt to add the image
+    let image = {
+        event_id: data.id,
+        image_url: event.imageUrl
+    };
+
+
+    try {
+        console.log('hhhhhh ', data.id)
+        const imageRes = await csrfFetch(`/api/events/${data.id}/images`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(image)
+        });
+        console.log(imageRes)
+        if (!imageRes.ok) {
+            const errorData = await imageRes.json();
+            throw new Error("Failed to add image");
+        }
+    } catch (error) {
+        return { error: error.message };
+    }
+
+    // Dispatch the new event to the store
     dispatch(addEvent(data));
-    return res;
-}
+
+    return data;
+};
+
 
 // Edit a event by id
-export const EditAEvent = (event, event_id) => async (dispatch) => {
+export const editAEvent = (event, event_id) => async (dispatch) => {
     let res;
-
+    console.log(event_id)
+    console.log(event)
     let updatedEvent = {
         name: event.name,
         description: event.description,
@@ -156,7 +201,7 @@ export const EditAEvent = (event, event_id) => async (dispatch) => {
 
 
 export const deleteEvent = (event_id) => async (dispatch) => {
-    const res = await csrfFetch(`/api/events${event_id}`, {
+    const res = await csrfFetch(`/api/events/${event_id}`, {
         method: 'DELETE'
     });
 
@@ -164,7 +209,7 @@ export const deleteEvent = (event_id) => async (dispatch) => {
         dispatch(removeEvent(event_id))
 
 
-        await dispatch(loadUserEvents())
+        await dispatch(loadEvent())
         return res
     }
 }
@@ -207,7 +252,7 @@ function eventsReducer(state = initialState, action) {
                 ...state,
                 allEvents: {
                     ...state.allEvents,
-                    [newevent.id]: newEvent
+                    [newEvent.id]: newEvent
                 }
             }
         case DELETE_EVENT: {

@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, redirect, request
 from app import db
 from app.models import Deck, Card, DeckCard, User, Event, EventImage, CardImage
 from flask_login import current_user, login_required
-from app.forms import EventForm
+from app.forms import EventForm, CreateEventImageForm
 
 event_routes = Blueprint('events', __name__)
 
@@ -140,6 +140,7 @@ def createEvent():
         db.session.add(event)
         db.session.commit()
         new_event = event.to_dict()
+
         return jsonify(new_event)
     return form.errors, 400
 
@@ -203,3 +204,41 @@ def removeEvent(event_id):
         db.session.commit()
 
         return {'message': 'Event deleted successfully.'}
+
+@event_routes.route('/<int:event_id>/images', methods=['POST'])
+@login_required
+def add_image_to_event(event_id):
+    logged_in_user = current_user.to_dict()
+
+    event_by_id = db.session.query(Event).filter(Event.id == event_id).first()
+
+    if not event_by_id:
+        return {'errors': 'Event does not exist'}, 404
+
+    if event_by_id.owner_id != logged_in_user['id']:
+        return {'errors': 'Unauthorized'}, 403
+
+    form = CreateEventImageForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        print("Form data:", form.data)  # Debugging log
+        image_url = form.data.get('image_url')
+
+        if not image_url:
+            return {'error': 'image_url is required'}, 400
+
+        image = EventImage(
+            event_id=event_id,
+            image_url=image_url
+        )
+        print("Adding image:", image)  # Debugging log
+
+        db.session.add(image)
+        db.session.commit()
+        new_image = image.to_dict()
+
+        return jsonify(new_image), 201
+    else:
+        print("Form errors:", form.errors)  # Debugging log
+        return form.errors, 400

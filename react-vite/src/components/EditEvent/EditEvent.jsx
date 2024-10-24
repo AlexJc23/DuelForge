@@ -9,6 +9,7 @@ const EditEvent = () => {
     const { event_id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    console.log('eeeeeeeeeeeeeeee ', event_id)
 
     const user = useSelector((state) => state.session.user);
     const event_by_id = useSelector(state => state.eventsReducer.eventDetail.event);
@@ -24,21 +25,27 @@ const EditEvent = () => {
 
     const formatDateToYMD = (dateString) => {
         const date = new Date(dateString);
-        if (isNaN(date.getTime())) return ''; // Handle invalid date
+        if (isNaN(date.getTime())) return '';
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`; // Correct format for input type="date"
+        return `${year}-${month}-${day}`;
     };
 
     useEffect(() => {
-        const fetchEventDetails = async () => {
-            await dispatch(thunkAuthenticate());
-            await dispatch(getOneEvent(event_id));
-            setIsLoaded(true);
+        const fetchEventDetails = () => {
+            dispatch(thunkAuthenticate())
+                .then(() => {
+                    dispatch(getOneEvent(event_id));
+                    setIsLoaded(true);
+                })
+                .catch((error) => {
+                    console.error("Error fetching event details:", error);
+                });
         };
         fetchEventDetails();
-    }, [dispatch, event_id]);
+    }, [event_id, dispatch]);
+
 
     useEffect(() => {
         if (event_by_id) {
@@ -74,6 +81,9 @@ const EditEvent = () => {
         e.preventDefault();
 
         if (validateData()) {
+
+
+
             const serverResponse = await dispatch(editAEvent({
                 name,
                 description,
@@ -82,15 +92,17 @@ const EditEvent = () => {
                 location,
                 price: parseFloat(price),
                 imageUrl
-            }));
+            }, event_id));
 
             if (serverResponse && serverResponse.errors) {
                 setErrors((error) => ({ ...error, ...serverResponse.errors }));
             } else {
-                navigate(`/events/`);
+
+                navigate(`/events/${event_id}`);
             }
         }
     };
+
 
     const handleGoBack = () => {
         navigate(-1);

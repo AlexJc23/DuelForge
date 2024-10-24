@@ -36,10 +36,10 @@ const addEvent = (payload) => ({
 })
 
 // Edit a event
-const updateEvent = (event) => {
+const updateEvent = (event) => ({
     type: EDIT_EVENT,
     event
-}
+})
 
 // remove a event
 const removeEvent = (event_id) => ({
@@ -169,10 +169,9 @@ export const createEvent = (event) => async (dispatch) => {
 
 // Edit a event by id
 export const editAEvent = (event, event_id) => async (dispatch) => {
+
     let res;
-    console.log(event_id)
-    console.log(event)
-    let updatedEvent = {
+    const updatedEvent = {
         name: event.name,
         description: event.description,
         start_date: event.start_date,
@@ -187,17 +186,46 @@ export const editAEvent = (event, event_id) => async (dispatch) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedEvent)
         });
-    } catch (error) {
-        return await error.json()
-    }
 
-    if (res.ok) {
-        const editAEvent = await res.json();
-        dispatch(updateEvent(editAEvent))
-        return editAEvent;
+        if (!res.ok) throw res;
+
+
+        const updatedEventData = await res.json();
+        dispatch(updateEvent(updatedEventData));
+
+        let image = {
+            image_url: event.imageUrl,
+            event_id: event_id
+        }
+
+        if (event.imageUrl) {
+            const imageUpdateResponse = await csrfFetch(`/api/events/${event_id}/images`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(image)
+            });
+
+            if (!imageUpdateResponse.ok) {
+                const imageErrorData = await imageUpdateResponse.json();
+                return { error: imageErrorData.errors || "Failed to update image." };
+            }
+        }
+
+        return updatedEventData;
+
+    } catch (error) {
+        try {
+            const errorData = await error.json();
+            console.error("Error updating event:", errorData);
+            return { error: errorData.errors || "Failed to update event." };
+        } catch (jsonError) {
+            // If the error response is not JSON, log the full response
+            console.error("Non-JSON error response:", error);
+            return { error: "Unexpected error. Please try again later." };
+        }
     }
-    return res
 }
+
 
 
 export const deleteEvent = (event_id) => async (dispatch) => {
@@ -254,6 +282,20 @@ function eventsReducer(state = initialState, action) {
                     ...state.allEvents,
                     [newEvent.id]: newEvent
                 }
+            }
+            case EDIT_EVENT: {
+                const updatedEvent = action.event;
+                return {
+                    ...state,
+                    allEvents: {
+                        ...state.allEvents,
+                        [updatedEvent.id]: updatedEvent
+                    },
+                    currEvent: {
+                        ...state.currEvent,
+                        ...updatedEvent
+                    },
+                };
             }
         case DELETE_EVENT: {
             const new_state = structuredClone(state)

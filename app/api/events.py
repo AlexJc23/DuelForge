@@ -149,19 +149,19 @@ def createEvent():
 @login_required
 def editEvent(event_id):
     """
-        Edit an event
+        EDIT AN EVENT
     """
     loggedin_user = current_user.to_dict()
-
     event_by_id = db.session.query(Event).filter(Event.id == event_id).first()
 
     if not event_by_id:
         return {'errors': 'Event does not exist'}, 404
 
     if event_by_id.owner_id != loggedin_user['id']:
-        return {'errors': 'Unauthorized to edit this deck'}, 403
+        return {'errors': 'Unauthorized to edit this event'}, 403
 
     form = EventForm()
+
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -172,18 +172,21 @@ def editEvent(event_id):
         if form.data.get('start_date'):
             event_by_id.start_date = form.data['start_date']
         if form.data.get('end_date'):
-            event_by_id.end_date = form.data['end_date']
-        if form.data.get('location'):
-            event_by_id.location = form.data['location']
+            event_by_id.start_date = form.data['end_date']
         if form.data.get('price'):
             event_by_id.price = form.data['price']
+        if form.data.get('location'):
+            event_by_id.location = form.data['location']
 
         db.session.commit()
 
         updated_event = event_by_id.to_dict()
 
-        return jsonify(updated_event)
-    return form.errors
+        return updated_event, 200
+
+    return form.errors, 400
+
+
 
 @event_routes.route('/<int:event_id>', methods=['DELETE'])
 @login_required
@@ -222,7 +225,6 @@ def add_image_to_event(event_id):
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        print("Form data:", form.data)  # Debugging log
         image_url = form.data.get('image_url')
 
         if not image_url:
@@ -232,7 +234,6 @@ def add_image_to_event(event_id):
             event_id=event_id,
             image_url=image_url
         )
-        print("Adding image:", image)  # Debugging log
 
         db.session.add(image)
         db.session.commit()
@@ -240,5 +241,38 @@ def add_image_to_event(event_id):
 
         return jsonify(new_image), 201
     else:
-        print("Form errors:", form.errors)  # Debugging log
         return form.errors, 400
+
+@event_routes.route('/<int:event_id>/images', methods=['PUT'])
+@login_required
+def edit_image(event_id):
+    logged_in_user = current_user.to_dict()
+
+    event_by_id = db.session.query(Event).filter(Event.id == event_id).first()
+    if not event_by_id:
+        return {'errors': 'Event does not exist'}, 404
+
+    if event_by_id.owner_id != logged_in_user['id']:
+        return {'errors': 'Unauthorized'}, 403
+
+    form = CreateEventImageForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        image_url = form.data.get('image_url')
+
+        if not image_url:
+            return {'error': 'image_url is required'}, 400
+
+        image_by_id = db.session.query(EventImage).filter(EventImage.event_id == event_id).first()
+        if not image_by_id:
+            return {'errors': 'Image does not exist'}, 404
+
+        image_by_id.image_url = image_url
+
+        db.session.commit()
+        updated_image = image_by_id.to_dict()
+
+        return jsonify({**updated_image, 'event_id': event_id}), 200
+    else:
+        return {'errors': form.errors}, 400

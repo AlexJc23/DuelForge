@@ -12,8 +12,8 @@ class Event(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(300), nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
-    end_date = db.Column(db.Date, nullable=False)
+    start_date = db.Column(db.String(10), nullable=False)
+    end_date = db.Column(db.String(10), nullable=False)
     location = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now, nullable=False)  # Updated

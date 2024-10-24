@@ -30,16 +30,16 @@ const loadUserEvents = (events) => ({
 
 
 // add a event
-const addEvent = (event) => ({
+const addEvent = (payload) => ({
     type:ADD_EVENT,
-    event
+    payload
 })
 
 // Edit a event
-const updateEvent = (event) => {
+const updateEvent = (event) => ({
     type: EDIT_EVENT,
     event
-}
+})
 
 // remove a event
 const removeEvent = (event_id) => ({
@@ -96,7 +96,9 @@ export const loggedInUserEvent = () =>  async (dispatch) => {
 
 // add event
 export const createEvent = (event) => async (dispatch) => {
-    let res;
+
+    let res, data;
+
     let newEvent = {
         owner_id: event.owner_id,
         name: event.name,
@@ -105,29 +107,71 @@ export const createEvent = (event) => async (dispatch) => {
         end_date: event.end_date,
         location: event.location,
         price: event.price
-    }
+    };
 
     try {
-        res = await csrfFetch('/api/events/', {
+        // Create the event
+        res = await csrfFetch('/api/events', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newEvent)
         });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+
+            throw new Error("Failed to create event");
+        }
+
+        // Parse response
+        data = await res.json();
+        if (!data || !data.id) {
+            console.error("Error: 'data' is undefined or missing 'id'. Response:", data);
+            return { error: "Event creation failed." };
+        }
+
     } catch (error) {
-        return error.json();
+
+        return { error: error.message };
     }
 
-    const data = await res.json();
 
+
+    // If event was created, attempt to add the image
+    let image = {
+        event_id: data.id,
+        image_url: event.imageUrl
+    };
+
+
+    try {
+        console.log('hhhhhh ', data.id)
+        const imageRes = await csrfFetch(`/api/events/${data.id}/images`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(image)
+        });
+        console.log(imageRes)
+        if (!imageRes.ok) {
+            const errorData = await imageRes.json();
+            throw new Error("Failed to add image");
+        }
+    } catch (error) {
+        return { error: error.message };
+    }
+
+    // Dispatch the new event to the store
     dispatch(addEvent(data));
-    return res;
-}
+
+    return data;
+};
+
 
 // Edit a event by id
-export const EditAEvent = (event, event_id) => async (dispatch) => {
-    let res;
+export const editAEvent = (event, event_id) => async (dispatch) => {
 
-    let updatedEvent = {
+    let res;
+    const updatedEvent = {
         name: event.name,
         description: event.description,
         start_date: event.start_date,
@@ -142,21 +186,50 @@ export const EditAEvent = (event, event_id) => async (dispatch) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedEvent)
         });
-    } catch (error) {
-        return await error.json()
-    }
 
-    if (res.ok) {
-        const editAEvent = await res.json();
-        dispatch(updateEvent(editAEvent))
-        return editAEvent;
+        if (!res.ok) throw res;
+
+
+        const updatedEventData = await res.json();
+        dispatch(updateEvent(updatedEventData));
+
+        let image = {
+            image_url: event.imageUrl,
+            event_id: event_id
+        }
+
+        if (event.imageUrl) {
+            const imageUpdateResponse = await csrfFetch(`/api/events/${event_id}/images`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(image)
+            });
+
+            if (!imageUpdateResponse.ok) {
+                const imageErrorData = await imageUpdateResponse.json();
+                return { error: imageErrorData.errors || "Failed to update image." };
+            }
+        }
+
+        return updatedEventData;
+
+    } catch (error) {
+        try {
+            const errorData = await error.json();
+            console.error("Error updating event:", errorData);
+            return { error: errorData.errors || "Failed to update event." };
+        } catch (jsonError) {
+            // If the error response is not JSON, log the full response
+            console.error("Non-JSON error response:", error);
+            return { error: "Unexpected error. Please try again later." };
+        }
     }
-    return res
 }
 
 
+
 export const deleteEvent = (event_id) => async (dispatch) => {
-    const res = await csrfFetch(`/api/events${event_id}`, {
+    const res = await csrfFetch(`/api/events/${event_id}`, {
         method: 'DELETE'
     });
 
@@ -164,7 +237,7 @@ export const deleteEvent = (event_id) => async (dispatch) => {
         dispatch(removeEvent(event_id))
 
 
-        await dispatch(loadUserEvents())
+        await dispatch(loadEvent())
         return res
     }
 }
@@ -207,8 +280,22 @@ function eventsReducer(state = initialState, action) {
                 ...state,
                 allEvents: {
                     ...state.allEvents,
-                    [newevent.id]: newEvent
+                    [newEvent.id]: newEvent
                 }
+            }
+            case EDIT_EVENT: {
+                const updatedEvent = action.event;
+                return {
+                    ...state,
+                    allEvents: {
+                        ...state.allEvents,
+                        [updatedEvent.id]: updatedEvent
+                    },
+                    currEvent: {
+                        ...state.currEvent,
+                        ...updatedEvent
+                    },
+                };
             }
         case DELETE_EVENT: {
             const new_state = structuredClone(state)

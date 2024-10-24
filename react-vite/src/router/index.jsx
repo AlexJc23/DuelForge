@@ -9,6 +9,8 @@ import LoggedinUserContent from '../components/LoggedinUserContent/LoggedinUserC
 import Landing from '../components/LandingPage';
 import AllEvents from '../components/AllEventsPage/AllEvents';
 import EventDetails from '../components/EventDetails/EventDetails';
+import CreateEvent from '../components/CreateEvent/CreateEvent';
+import EditEvent from '../components/EditEvent/EditEvent';
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +56,14 @@ export const router = createBrowserRouter([
           {
             path: ':event_id',
             element: <EventDetails />
+          },
+          {
+            path: 'create',
+            element: <CreateEvent />
+          },
+          {
+            path: ':event_id/update',
+            element: <EditEvent />
           }
         ]
       },

@@ -1,24 +1,48 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, FloatField
 from wtforms.validators import DataRequired, ValidationError
-from datetime import datetime
+# from datetime import datetime
 
 
-# Check if the start date is in the future and in a valid format
-def checkStartDate(form, field):
-    start_date = field.data
 
-    # Ensure the date is in the correct format and in the future
-    if start_date <= datetime.now().date():
-        raise ValidationError('Start date must be in the future.')
 
-# Check if the end date is after the start date
-def checkEndDate(form, field):
-    end_date = field.data
-    start_date = form.start_date.data
+# def checkStartDate(form, field):
+#     start_date_str = field.data
+#     if isinstance(start_date_str, datetime.date):
+#         start_date = start_date_str
+#     else:
+#         try:
+#             start_date = datetime.strptime(start_date_str, '%d/%m/%Y').date()
+#         except ValueError:
+#             raise ValidationError('Start date must be in the format dd/mm/yyyy.')
 
-    if end_date <= start_date:
-        raise ValidationError('End date must be after the start date.')
+#     if start_date <= datetime.now().date():
+#         raise ValidationError('Start date must be in the future.')
+
+# def checkEndDate(form, field):
+#     end_date_str = field.data
+#     if isinstance(end_date_str, datetime.date):
+#         end_date = end_date_str
+#     else:
+#         try:
+#             end_date = datetime.strptime(end_date_str, '%d/%m/%Y').date()
+#         except ValueError:
+#             raise ValidationError('End date must be in the format dd/mm/yyyy.')
+
+#     start_date_str = form.start_date.data
+#     if not start_date_str:
+#         raise ValidationError('Start date is required.')
+
+#     if isinstance(start_date_str, datetime.date):
+#         start_date = start_date_str
+#     else:
+#         try:
+#             start_date = datetime.strptime(start_date_str, '%d/%m/%Y').date()
+#         except ValueError:
+#             raise ValidationError('Start date must be in the format dd/mm/yyyy.')
+
+#     if end_date <= start_date:
+#         raise ValidationError('End date must be after the start date.')
 
 # Check if the price is valid
 def checkPrice(form, field):
@@ -29,7 +53,7 @@ def checkPrice(form, field):
 class EventForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     description = StringField('description', validators=[DataRequired()])
-    start_date = DateField('start_date', format='%Y/%m/%d', validators=[DataRequired(), checkStartDate])
-    end_date = DateField('end_date', format='%Y/%m/%d', validators=[DataRequired(), checkEndDate])
+    start_date = StringField('start_date', validators=[DataRequired()])
+    end_date = StringField('end_date', validators=[DataRequired()])
     location = StringField('location', validators=[DataRequired()])
     price = FloatField('price', validators=[DataRequired(), checkPrice])

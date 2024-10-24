@@ -7,6 +7,8 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { BsCalendarDateFill } from "react-icons/bs";
 import { IoTicketOutline } from "react-icons/io5";
+import OpenModalButton from '../OpenModalButton/OpenModalButton'
+import DeleteEventModal from "../DeleteEventModal/DeleteEventModal";
 import './EventDetails.css';
 import LoadMap from "./LoadMap";
 
@@ -21,7 +23,7 @@ const EventDetails = () => {
     const eventDetails = useSelector((state) => state.eventsReducer.eventDetail.event);
 
     // State for coordinates
-
+    console.log('this one   ',eventDetails)
 
     const handleGoBack = () => {
         navigate(-1);
@@ -64,6 +66,9 @@ const EventDetails = () => {
             year: 'numeric'
         });
     }
+    const handleEditBtn = () => {
+        navigate(`/events/${eventDetails.id}/update`);
+    };
 
 
 
@@ -73,13 +78,16 @@ const EventDetails = () => {
                 <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
                     <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
                 </button>
-                <div style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
-                    <button className="glow-on-hover" style={{ margin: '0 0 20px 0' }} hidden={(!user || user.id !== eventDetails.event_owner.id)}>
+                <div style={{ display: 'flex', gap: '5px', justifyContent: 'center', alignItems: 'center' }}>
+                    <button onClick={handleEditBtn} className="glow-on-hover" style={{ margin: '0 10px 20px 0' }} hidden={(!user || user.id !== eventDetails.event_owner.id)}>
                         Edit
                     </button>
-                    <button className="glow-on-hover" style={{ margin: '0 0 20px 10px' }} hidden={(!user || user.id !== eventDetails.event_owner.id)}>
-                        Delete
-                    </button>
+                    <div hidden={(!user || user.id !== eventDetails.event_owner.id)}>
+                        <OpenModalButton
+                            buttonText={"Delete"}
+                            modalComponent={<DeleteEventModal event_id={eventDetails.id}/>}
+                            />
+                    </div>
                 </div>
             </div>
             <div className="event-details-top">

@@ -125,13 +125,8 @@ export const createEvent = (event) => async (dispatch) => {
 
         // Parse response
         data = await res.json();
-        if (!data || !data.id) {
-            console.error("Error: 'data' is undefined or missing 'id'. Response:", data);
-            return { error: "Event creation failed." };
-        }
 
     } catch (error) {
-
         return { error: error.message };
     }
 
@@ -145,13 +140,13 @@ export const createEvent = (event) => async (dispatch) => {
 
 
     try {
-        console.log('hhhhhh ', data.id)
+        
         const imageRes = await csrfFetch(`/api/events/${data.id}/images`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(image)
         });
-        console.log(imageRes)
+
         if (!imageRes.ok) {
             const errorData = await imageRes.json();
             throw new Error("Failed to add image");
@@ -169,13 +164,17 @@ export const createEvent = (event) => async (dispatch) => {
 
 // Edit a event by id
 export const editAEvent = (event, event_id) => async (dispatch) => {
+    const formatDate = (dateString) => {
+        const [year, month, day] = dateString.split('/');
+        return `${month}/${day}/${year}`;
+    };
 
     let res;
     const updatedEvent = {
         name: event.name,
         description: event.description,
-        start_date: event.start_date,
-        end_date: event.end_date,
+        start_date: formatDate(event.start_date),
+        end_date: formatDate(event.end_date),
         location: event.location,
         price: event.price
     };

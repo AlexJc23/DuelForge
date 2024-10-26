@@ -1,0 +1,19 @@
+.deck-form-card{
+    height: 100px;
+    width: 75px;
+}
+
+.josh {
+    height: 100px;
+    width: 100px;
+    border: 1px solid white;
+}
+
+.close-btn {
+    background-color: blue;
+}
+
+.itms-deck {
+    display: flex;
+    
+}

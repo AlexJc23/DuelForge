@@ -91,7 +91,7 @@ export const loggedInUserDeck = () =>  async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json()
-        console.log('dataaaaaa', data)
+
         dispatch(loadUserDecks(data));
         return data
     }
@@ -108,7 +108,7 @@ export const createDeck = (deck) => async (dispatch) => {
     }
 
     try {
-        res = await csrfFetch('/api/decks/', {
+        res = await csrfFetch('/api/decks', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newDeck)
@@ -123,16 +123,34 @@ export const createDeck = (deck) => async (dispatch) => {
 
     const data = await res.json();
 
+        for (const cardId of deck.cardsInDeck) {
+            let cardDeck = {
+                card_id: cardId,
+                deck_id: data.id
+            };
+            console.log(cardDeck)
+            try {
+                await csrfFetch(`/api/cards/add/${cardId}/${data.id}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(cardDeck)
+                });
+            } catch (error) {
+                return error;
+            }
+
+        }
+
     dispatch(addDeck(data));
-    return res;
+    return data;
 };
 
 
 // Edit a deck by id
-export const EditADeck = (deck, deck_id) => async (dispatch) => {
+export const editADeck = (deck, deck_id) => async (dispatch) => {
     let res;
 
-    let updatedDeck = {
+    const updatedDeck = {
         name: deck.name,
         description: deck.description
     };
@@ -143,32 +161,81 @@ export const EditADeck = (deck, deck_id) => async (dispatch) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedDeck)
         });
-    } catch (error) {
-        return await error.json()
-    }
 
-    if (res.ok) {
-        const editADeck = await res.json();
-        dispatch(updateDeck(editADeck))
-        return editADeck;
+        // Check if the response is okay before parsing
+        if (!res.ok) {
+            const errorData = await res.json(); // Read the error response once
+            return { errors: errorData }; // Return error for handling
+        }
+
+        const data = await res.json(); // Read the response body once
+
+        // Remove old cards from the deck
+        if ( deck.ogDeck ) {
+            for (const cardId of deck.ogDeck) {
+                try {
+                    await csrfFetch(`/api/cards/${cardId}/${data.id}`, {
+                        method: 'DELETE',
+                    });
+                } catch (error) {
+                    console.error("Error deleting card:", error);
+                    return { errors: "Failed to delete some cards." };
+                }
+            }
+        }
+
+
+        // Add new cards to the deck
+
+        for (const cardId of deck.cardsInDeck) {
+            const cardDeck = {
+                card_id: cardId,
+                deck_id: data.id
+            };
+
+            try {
+                await csrfFetch(`/api/cards/add/${cardId}/${data.id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cardDeck)
+                });
+            } catch (error) {
+                console.error("Error adding card:", error);
+                return { errors: "Failed to add some cards." };
+            }
+        }
+
+        dispatch(updateDeck(data));
+        return data;
+
+    } catch (error) {
+
+        console.error("Error updating deck:", error);
+        return { errors: "An unexpected error occurred." };
     }
-    return res
-}
+};
 
 
 export const deleteDeck = (deck_id) => async (dispatch) => {
-    const res = await csrfFetch(`/api/decks/${deck_id}`, {
-        method: 'DELETE'
-    });
+    try {
+        const res = await csrfFetch(`/api/decks/${deck_id}`, {
+            method: 'DELETE'
+        });
 
-    if (res.ok) {
-        dispatch(removeDeck(deck_id))
-
-
-        await dispatch(loadUserDecks())
-        return res
+        if (res.ok) {
+            dispatch(removeDeck(deck_id));
+            return res; // Return response for any further handling if needed
+        } else {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Failed to delete deck');
+        }
+    } catch (error) {
+        console.error('Error deleting deck:', error);
+        return { error: error.message }; // Return error message for handling in the modal
     }
-}
+};
+
+
 
 
 const initialState = {allDecks: {}, deckDetail: {}, userDecks: {}}
@@ -224,12 +291,12 @@ function decksReducer(state = initialState, action) {
             }
         }
         case DELETE_DECK: {
-            const newState = { ...state, allDecks: { ...state.allDecks } };
-            delete newState.allDecks[action.deck_id];
-            return newState;
+            const { [action.deck_id]: removedDeck, ...remainingDecks } = state.allDecks;
+            return {
+                ...state,
+                allDecks: remainingDecks,
+            };
         }
-
-
         default:
             return state
     }

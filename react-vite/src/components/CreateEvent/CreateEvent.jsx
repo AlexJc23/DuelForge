@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { thunkAuthenticate } from "../../redux/session";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import './CreateEvent.css'
@@ -25,6 +25,8 @@ const CreateEvent = () => {
     }, [dispatch]);
 
     const user = useSelector((state) => state.session.user);
+
+    if (!user) return (navigate('/home'))
 
     const validateData = () => {
         const error = {};
@@ -69,7 +71,7 @@ const CreateEvent = () => {
                 price: parseFloat(price),
                 imageUrl
             }));
-
+            console.log(serverResponse)
             if (serverResponse && serverResponse.errors) {
                 setErrors((error) => ({ ...error, ...serverResponse.errors }));
             }
@@ -161,7 +163,7 @@ const CreateEvent = () => {
                         $<input
                             style={{ color: 'black' }}
                             placeholder="00"
-                            type="number" 
+                            type="number"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             required

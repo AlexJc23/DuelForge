@@ -9,7 +9,6 @@ const EditEvent = () => {
     const { event_id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log('eeeeeeeeeeeeeeee ', event_id)
 
     const user = useSelector((state) => state.session.user);
     const event_by_id = useSelector(state => state.eventsReducer.eventDetail.event);
@@ -22,6 +21,7 @@ const EditEvent = () => {
     const [location, setLocation] = useState('');
     const [errors, setErrors] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
+
 
     const formatDateToYMD = (dateString) => {
         const date = new Date(dateString);
@@ -76,6 +76,7 @@ const EditEvent = () => {
         setErrors(error);
         return Object.keys(error).length === 0;
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();

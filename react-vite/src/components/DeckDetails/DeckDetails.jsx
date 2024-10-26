@@ -6,8 +6,10 @@ import { getComments } from "../../redux/comments";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import DeckNotFound from "./Decknotfound";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import CardModal from "./CardModal";
 import './Deckdetails.css';
+import DeleteDeckModal from "../DeleteDeckModal/DeleteDeckModal";
 
 const DeckDetails = () => {
     const { deck_id } = useParams();
@@ -59,6 +61,10 @@ if (isLoading) {
     );
 }
 
+const handleEditBtn = () => {
+    navigate(`/decks/${deck_id}/update`);
+};
+
 
 if (!deckDetails) {
     return <DeckNotFound />;
@@ -72,13 +78,16 @@ if (!deckDetails) {
                     <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
                         <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
                     </button>
-                    <div style={{display:'flex', gap: '5px', justifyContent: 'center'}}>
-                    <button className="glow-on-hover" style={{margin: '0 0 20px 0'}} hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
+                    <div style={{display:'flex', gap: '9px', justifyContent: 'center'}}>
+                    <button className="glow-on-hover" onClick={handleEditBtn} style={{margin: '0 0 20px 0'}} hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
                         Edit
                     </button>
-                    <button className="glow-on-hover" style={{margin: '0 0 20px 10px'}} hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
-                        Delete
-                    </button>
+                    <div hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
+                        <OpenModalButton
+                            buttonText={"Delete"}
+                            modalComponent={<DeleteDeckModal deck_id={deckDetails.id}/>}
+                            />
+                    </div>
                     </div>
                 </div>
             </div>

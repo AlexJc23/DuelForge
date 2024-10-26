@@ -213,21 +213,24 @@ def editDeck(deck_id):
 @decks_routes.route('/<int:deck_id>', methods=['DELETE'])
 @login_required
 def removeDeck(deck_id):
-    currentUser = current_user.to_dict()
-
+    # Find the deck by its ID
     deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
 
+    # Check if the deck exists
     if not deck_by_id:
         return {'error': 'Deck does not exist'}, 404
 
+    # Get the current user details
+    currentUser = current_user.to_dict()
+
+    # Check authorization
     if currentUser['id'] != deck_by_id.user_id:
         return {'error': 'Unauthorized to complete this action'}, 403
-    else:
-        db.session.delete(deck_by_id)
-        db.session.commit()
-        return {'message': 'Deck was removed successfully'}, 200
 
-
+    # Proceed to delete the deck
+    db.session.delete(deck_by_id)
+    db.session.commit()
+    return {'message': 'Deck was removed successfully'}, 200
 
 # comment section
 

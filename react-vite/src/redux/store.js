@@ -9,6 +9,7 @@ import sessionReducer from "./session";
 import decksReducer from "./decks";
 import eventsReducer from "./events";
 import commentReducer from "./comments";
+import cardsReducer from "./cards";
 
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   decksReducer,
   eventsReducer,
   commentReducer,
+  cardsReducer
 });
 
 let enhancer;

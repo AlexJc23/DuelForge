@@ -11,6 +11,9 @@ import AllEvents from '../components/AllEventsPage/AllEvents';
 import EventDetails from '../components/EventDetails/EventDetails';
 import CreateEvent from '../components/CreateEvent/CreateEvent';
 import EditEvent from '../components/EditEvent/EditEvent';
+import CreateDeck from '../components/CreateDeck';
+import UpdateDeck from '../components/EditDeck';
+
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +46,14 @@ export const router = createBrowserRouter([
             path: ':deck_id',
             element: <DeckDetails />
           },
+          {
+            path: 'create',
+            element: <CreateDeck />
+          },
+          {
+            path: ':deck_id/update',
+            element: <UpdateDeck />
+          }
 
         ]
       },

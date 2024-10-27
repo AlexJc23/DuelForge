@@ -168,17 +168,18 @@ export const editAEvent = (event, event_id) => async (dispatch) => {
         const [year, month, day] = dateString.split('/');
         return `${month}/${day}/${year}`;
     };
-
     let res;
     const updatedEvent = {
+
         name: event.name,
         description: event.description,
-        start_date: formatDate(event.start_date),
-        end_date: formatDate(event.end_date),
+        start_date: event.start_date,
+        end_date: event.end_date,
         location: event.location,
         price: event.price
     };
 
+    console.log('yeelllll ',updatedEvent)
     try {
         res = await csrfFetch(`/api/events/${event_id}`, {
             method: 'PUT',

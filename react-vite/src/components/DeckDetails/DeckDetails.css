@@ -18,7 +18,10 @@
     gap: 10px;
     height: 600px;
     overflow: auto;
-
+    border: 1px solid rgba(255, 255, 255, 0.137);
+    border-radius: 7px;
+    padding: 10px 0;
+    justify-content: center;
 }
 .details-right {
     width: 40%;
@@ -30,7 +33,7 @@
 
 .details-body {
     width: 70%;
-    margin: 20px auto;
+    margin: 30px auto;
 }
 .top-details{
     margin-bottom: 40px;

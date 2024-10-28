@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { thunkAuthenticate } from "../../redux/session";
 import { editAEvent, getOneEvent } from "../../redux/events";
 import { FaArrowLeftLong } from 'react-icons/fa6';
+import Footer from "../Footer/Footer";
 
 const EditEvent = () => {
     const { event_id } = useParams();
@@ -110,106 +111,110 @@ const EditEvent = () => {
     };
 
     return isLoaded ? (
+
         <>
-            <div className="top-details">
-                <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
-                    <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
-                </button>
-            </div>
-            <div id="create-evnt">
-                <form onSubmit={handleSubmit}>
-                    <section id="title-create">
-                        <h2>Title of Event<span className="required">*</span></h2>
-                        <p>Give your event a special title to grab attention</p>
-                        <input
-                            style={{ color: 'black' }}
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                        {errors.name && <p className="err-msg">{errors.name}</p>}
-                    </section>
-                    <section id="description-create">
-                        <h2>Description<span className="required">*</span></h2>
-                        <p>Don't be shy... Tell us all the details about this event!</p>
-                        <input
-                            style={{ color: 'black' }}
-                            type="text"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
-                        {errors.description && <p className="err-msg">{errors.description}</p>}
-                    </section>
-                    <section id="dates-create">
-                        <div className="dates">
-                            <h2>Start Date<span className="required">*</span></h2>
+        <div className="details-body">
+                <div className="top-details">
+                    <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
+                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
+                    </button>
+                </div>
+                <div id="create-evnt">
+                    <form onSubmit={handleSubmit}>
+                        <section id="title-create" className="glow-on-hover-create">
+                            <h2>Title of Event<span className="required"></span></h2>
+                            <p>Give your event a special title to grab attention</p>
                             <input
-                                style={{ color: 'black' }}
-                                type='date'
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
+                                style={{ color: 'white' }}
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 required
                             />
-                        </div>
-                        <div className="dates">
-                            <h2>End Date<span className="required">*</span></h2>
+                            {errors.name && <p className="err-msg">{errors.name}</p>}
+                        </section>
+                        <section id="description-create" className="glow-on-hover-create">
+                            <h2>Description<span className="required"></span></h2>
+                            <p>Don't be shy... Tell us all the details about this event!</p>
                             <input
-                                style={{ color: 'black' }}
-                                type='date'
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
+                                style={{ color: 'white' }}
+                                type="text"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                                 required
                             />
-                        </div>
-                        {errors.endDate && <p className="err-msg">{errors.endDate}</p>}
-                    </section>
-                    <section id="location-create">
-                        <h2>Location<span className="required">*</span></h2>
-                        <p>Now, where will this event take place?</p>
-                        <input
-                            style={{ color: 'black' }}
-                            placeholder="123 Random St, Columbus, AB 12345"
-                            type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            required
-                        />
-                        {errors.location && <p className="err-msg">{errors.location}</p>}
-                    </section>
-                    <section id="price-create">
-                        <h2>Price<span className="required">*</span></h2>
-                        <p>Is this event free or do people need to come prepared to pay?</p>
-                        $<input
-                            style={{ color: 'black' }}
-                            placeholder="00"
-                            type="number"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            required
-                        />
-                        {errors.price && <p className="err-msg">{errors.price}</p>}
-                    </section>
-                    <section id="image-create">
-                        <h2>Image<span className="required">*</span></h2>
-                        <p>Lastly, add an image to make your event stick out to the rest of them.</p>
-                        <input
-                            style={{ color: 'black' }}
-                            placeholder="Image URL"
-                            type="text"
-                            value={imageUrl}
-                            onChange={(e) => setImageUrl(e.target.value)}
-                            required
-                        />
-                        {errors.imageUrl && <p className="err-msg">{errors.imageUrl}</p>}
-                    </section>
-                    <section className="form-bttm">
-                        <button type="button" className="glow-on-hover" onClick={handleGoBack}>Cancel</button>
-                        <button type="submit" className="glow-on-hover">Publish</button>
-                    </section>
-                </form>
+                            {errors.description && <p className="err-msg">{errors.description}</p>}
+                        </section>
+                        <section id="dates-create" className="glow-on-hover-create">
+                            <div className="dates">
+                                <h2>Start Date<span className="required"></span></h2>
+                                <input
+                                    style={{ color: 'white' }}
+                                    type='date'
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="dates">
+                                <h2>End Date<span className="required"></span></h2>
+                                <input
+                                    style={{ color: 'white' }}
+                                    type='date'
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            {errors.endDate && <p className="err-msg">{errors.endDate}</p>}
+                        </section>
+                        <section id="location-create" className="glow-on-hover-create">
+                            <h2>Location<span className="required"></span></h2>
+                            <p>Now, where will this event take place?</p>
+                            <input
+                                style={{ color: 'white' }}
+                                placeholder="123 Random St, Columbus, AB 12345"
+                                type="text"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                required
+                            />
+                            {errors.location && <p className="err-msg">{errors.location}</p>}
+                        </section>
+                        <section id="price-create" className="glow-on-hover-create">
+                            <h2>Price<span className="required"></span></h2>
+                            <p>Is this event free or do people need to come prepared to pay?</p>
+                            $<input
+                                style={{ color: 'white' }}
+                                placeholder="00"
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                required
+                            />
+                            {errors.price && <p className="err-msg">{errors.price}</p>}
+                        </section>
+                        <section id="image-create" className="glow-on-hover-create">
+                            <h2>Image<span className="required"></span></h2>
+                            <p>Lastly, add an image to make your event stick out to the rest of them.</p>
+                            <input
+                                style={{ color: 'white' }}
+                                placeholder="Image URL"
+                                type="text"
+                                value={imageUrl}
+                                onChange={(e) => setImageUrl(e.target.value)}
+                                required
+                            />
+                            {errors.imageUrl && <p className="err-msg">{errors.imageUrl}</p>}
+                        </section>
+                        <section className="form-bttm">
+                            <button type="button" className="glow-on-hover" onClick={handleGoBack}>Cancel</button>
+                            <button type="submit" className="glow-on-hover">Publish</button>
+                        </section>
+                    </form>
+                </div>
             </div>
+            <Footer />
         </>
     ) : (
         <div id="loading">

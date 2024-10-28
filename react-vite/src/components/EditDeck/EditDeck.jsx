@@ -6,9 +6,10 @@ import { thunkAuthenticate } from "../../redux/session";
 import { editADeck, getOneDeck } from "../../redux/decks";
 import { getAllCards } from "../../redux/cards";
 import { IoMdClose } from "react-icons/io";
-import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import CardDeckModal from "../DeckDetails/CardModal";
 import './EditDeck.css';
+import Footer from "../Footer/Footer";
+import OpenModalMenuItemCard from "../OpenModalMenuItemCard/OpenModalMenuItemCard";
 
 const UpdateDeck = () => {
     const {deck_id} = useParams();
@@ -22,8 +23,8 @@ const UpdateDeck = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [ogDeck, setOgDeck] = useState([]);
     const [showMenu, setShowMenu] = useState(false);
-    console.log('og deck ', ogDeck)
-    console.log('deck now ', cardsInDeck)
+
+
 
 
     useEffect(() => {
@@ -59,7 +60,7 @@ const UpdateDeck = () => {
         if(deck_by_id) {
             setName(deck_by_id.name || '')
             setDescription(deck_by_id.description || '')
-            console.log(deck_by_id.cards)
+
             for (const card of deck_by_id.cards) {
                 cards.push(card.id)
             }
@@ -79,11 +80,11 @@ const UpdateDeck = () => {
                 ogDeck
             }, deck_id));
 
-            console.log("Server Response:", serverResponse); // Debugging log
+
 
             if (serverResponse && serverResponse.errors) {
                 setErrors((error) => ({ ...error, ...serverResponse.errors }));
-                console.log("Errors:", serverResponse.errors); // Debugging log
+
             } else {
                 navigate(`/decks/${serverResponse.id}`);
             }
@@ -117,84 +118,90 @@ const UpdateDeck = () => {
     };
 
     return isLoaded ? (
-        <div>
-            <div className="top-details">
-                <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
-                    <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
-                </button>
-            </div>
-            <div className="deck-form">
-                <form onSubmit={handleSubmit}>
-                    <section id="title-deck">
-                        <h2>Title of Deck<span className="required">*</span></h2>
-                        <p>Give your deck a name!</p>
-                        <input
-                            style={{ color: 'black' }}
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                        {errors.name && <p className="err-msg">{errors.name}</p>}
-                    </section>
-                    <section id="description-deck">
-                        <h2>Description<span className="required">*</span></h2>
-                        <p>Provide some details about this deck!</p>
-                        <input
-                            style={{ color: 'black' }}
-                            type="text"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
-                        {errors.description && <p className="err-msg">{errors.description}</p>}
-                    </section>
-                    <section
-                        id='cards-form'
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
-                        style={{ border: '2px dashed #ccc', padding: '10px', minHeight: '100px' }}
-                    >
-                        <h2>Cards in your deck</h2>
-                        <div>
-                            {cardsInDeck.map((cardId, index) => {
-                                const card = cards[cardId];
-                                return card ? (
-                                    <div className="itms-deck">
-                                    <p key={card.id}> {card.name}</p>
-                                    <IoMdClose className="close-btn" onClick={() => removeFromList(index)}/>
-                                    </div>
-                                ) : null;
-                            })}
-                        </div>
-                        {errors.cardsInDeck && <p className="err-msg">{errors.cardsInDeck}</p>}
-                    </section>
-                    <section className="form-bttm">
-                        <button className="glow-on-hover" onClick={handleGoBack}>Cancel</button>
-                        <button type="submit" className="glow-on-hover">Publish</button>
-                    </section>
-                </form>
-            </div>
-            <div className="cards-form">
-                {allCards.map(card => (
+        <>
+            <div className="details-body-decks">
+                <div className="top-details">
+                    <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
+                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
+                    </button>
+                </div>
+                <div className="create-deck">
+                    <div className="deck-form">
+                        <form onSubmit={handleSubmit}>
+                            <section  className="glow-on-hover-create">
+                                <h2>Title of Deck<span className="required"></span></h2>
+                                <p>Give your deck a name!</p>
+                                <input
+                                    style={{ color: 'white' }}
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                                {errors.name && <p className="err-msg">{errors.name}</p>}
+                            </section>
+                            <section className="glow-on-hover-create">
+                                <h2>Description<span className="required"></span></h2>
+                                <p>Provide some details about this deck!</p>
+                                <input
+                                    style={{ color: 'white' }}
+                                    type="text"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    required
+                                />
+                                {errors.description && <p className="err-msg">{errors.description}</p>}
+                            </section>
+                            <section
+                                className="glow-on-hover-create-in-deck"
+                                onDrop={handleDrop}
+                                onDragOver={handleDragOver}
+                                style={{height: '200px', overflow: 'scroll'}}
+                            >
+                                <h2> Drag cards to your deck<span className="required"></span></h2>
+                                <p>Amount of cards in deck: ( {cardsInDeck.length} )</p>
+                                <div>
+                                    {cardsInDeck.map((cardId, index) => {
+                                        const card = cards[cardId];
+                                        return card ? (
+                                            <div className="itms-deck">
+                                            <p key={card.id}> {card.name}</p>
+                                            <IoMdClose className="close-btn" onClick={() => removeFromList(index)}/>
+                                            </div>
+                                        ) : null;
+                                    })}
+                                </div>
+                                {errors.cardsInDeck && <p className="err-msg">{errors.cardsInDeck}</p>}
+                            </section>
+                            <section className="form-bttm">
+                                <button className="glow-on-hover" onClick={handleGoBack}>Cancel</button>
+                                <button type="submit" className="glow-on-hover">Publish</button>
+                            </section>
+                        </form>
+                    </div>
+                    <div className="cards-form">
+                        {allCards.map(card => (
 
-                    <OpenModalMenuItem
+                            <OpenModalMenuItemCard
 
-                            itemText= {<img
-                                key={card.id}
-                                className="deck-form-card"
-                                src={card.image.image_url}
-                                alt="Card Image"
-                                draggable
-                                onDragStart={(e) => handleDragStart(e, card.id)}
-                                style={{ cursor: 'move' }} 
-                                />}
-                            onItemClick={() => setShowMenu(false)}
-                            modalComponent={<CardDeckModal url={card.image.image_url}/>}
-                            />
-                ))}
+                                    itemText= {<img
+                                        key={card.id}
+                                        className="deck-form-card"
+                                        src={card.image.image_url}
+                                        alt="Card Image"
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, card.id)}
+                                        style={{ cursor: 'pointer' }}
+                                        />}
+                                    onItemClick={() => setShowMenu(false)}
+                                    modalComponent={<CardDeckModal url={card.image.image_url}/>}
+                                    />
+                        ))}
+                    </div>
+                </div>
             </div>
-        </div>
+            <Footer />
+        </>
     ) : (
         <div id="loading">
             <h1 className='loading'>

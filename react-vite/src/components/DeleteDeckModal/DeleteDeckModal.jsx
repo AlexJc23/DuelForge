@@ -2,21 +2,19 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { deleteDeck } from "../../redux/decks";
-
+import './DeleteDeckModal.css'
 const DeleteDeckModal = ({ deck_id }) => {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleDelete = async () => {
-        console.log(deck_id)
         const response = await dispatch(deleteDeck(deck_id));
         if (response.ok) {
             closeModal();
             navigate('/decks');
         } else {
             console.error('Failed to delete deck:', response.error);
-            // Optionally show an error message to the user
         }
     };
 

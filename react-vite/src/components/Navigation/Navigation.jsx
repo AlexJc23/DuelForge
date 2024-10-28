@@ -36,7 +36,7 @@ function Navigation() {
         <li className="searchbar">
           <form onSubmit={handleSearch}>
             <input
-              type="text"
+              type="textarea"
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

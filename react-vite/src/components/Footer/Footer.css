@@ -1,0 +1,13 @@
+.footer {
+    margin: 100px auto 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative; /* Changed to relative */
+    bottom: 0; /* Aligns to the bottom */
+    width: 100%; /* Full width */
+    padding: 30px 0 30px 0; /* Padding for spacing */
+    border-top: 1px solid #1596c56f;
+    color: white; /* Text color */
+}

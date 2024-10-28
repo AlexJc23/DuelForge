@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { FaArrowLeftLong } from "react-icons/fa6";
 import './AllDecksPage.css'
+import Footer from "../Footer/Footer";
 
 
 const AllDecksPage = () => {
@@ -59,15 +60,16 @@ const AllDecksPage = () => {
     }
 
     const handleGoBack = () => {
-        navigate(-1);
+        navigate('/home');
     };
 
     return (
+        <>
         <div  className="decks-container">
             <div>
                 <div className="top-details">
                     <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
-                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
+                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Home
                     </button>
                 </div>
             </div>
@@ -87,11 +89,13 @@ const AllDecksPage = () => {
                         ) : (
                             <div className="no-image">No image available</div>
                         )}
-                        <p style={{textAlign: 'center',marginTop: '19px', marginLeft: '40px', width:'38px'}}>{successfulDeck.name}</p>
+                        <p style={{textAlign: 'center',marginTop: '19px', marginLeft: '40px', width:'38px', color: 'white'}}>{successfulDeck.name}</p>
                     </NavLink>
                 ))}
             </ul>
         </div>
+        <Footer />
+        </>
     );
 }
 

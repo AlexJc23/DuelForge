@@ -5,11 +5,12 @@ import { getOneDeck } from "../../redux/decks";
 import { getComments } from "../../redux/comments";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import DeckNotFound from "./Decknotfound";
-import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import CardModal from "./CardModal";
 import './Deckdetails.css';
 import DeleteDeckModal from "../DeleteDeckModal/DeleteDeckModal";
+import Footer from "../Footer/Footer";
+import OpenModalMenuItemCard from "../OpenModalMenuItemCard/OpenModalMenuItemCard";
 
 const DeckDetails = () => {
     const { deck_id } = useParams();
@@ -24,7 +25,7 @@ const DeckDetails = () => {
 
 
     const handleGoBack = () => {
-        navigate(-1);
+        navigate('/decks');
     };
 
     const deckCards = deckDetails?.cards || [];
@@ -72,57 +73,60 @@ if (!deckDetails) {
 
 
     return (
-        <div className="details-body">
-            <div>
-                <div className="top-details">
-                    <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
-                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
-                    </button>
-                    <div style={{display:'flex', gap: '9px', justifyContent: 'center'}}>
-                    <button className="glow-on-hover" onClick={handleEditBtn} style={{margin: '0 0 20px 0'}} hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
-                        Edit
-                    </button>
-                    <div hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
-                        <OpenModalButton
-                            buttonText={"Delete"}
-                            modalComponent={<DeleteDeckModal deck_id={deckDetails.id}/>}
-                            />
+            <>
+            <div className="details-body">
+                <div>
+                    <div className="top-details">
+                        <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
+                            <FaArrowLeftLong style={{ marginRight: '5px' }} /> Decks
+                        </button>
+                        <div style={{display:'flex', gap: '9px', justifyContent: 'center'}}>
+                        <button className="glow-on-hover" onClick={handleEditBtn} style={{margin: '0 0 20px 0'}} hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
+                            Edit
+                        </button>
+                        <div hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
+                            <OpenModalButton
+                                buttonText={"Delete"}
+                                modalComponent={<DeleteDeckModal deck_id={deckDetails.id}/>}
+                                />
+                        </div>
+                        </div>
                     </div>
+                </div>
+                <div className="lower-details">
+                    <div className="details-left">
+                        {deckCards.length > 0 ? (
+                            deckCards.map((card) => (
+
+                                <OpenModalMenuItemCard
+                                itemText= {<img key={card.id} className="details-card" src={card.image.image_url} alt="Card Image" />}
+                                onItemClick={() => setShowMenu(false)}
+                                modalComponent={<CardModal url={card.image.image_url}/>}
+                                />
+                            ))
+                        ) : (
+                            <div className="no-image">No image available</div>
+                        )}
+                    </div>
+
+                    <div className="details-right">
+                            <div className="details-upperright">
+                                <h5>owner: {deckDetails.deck_owner.username}</h5>
+                                <h3 style={{fontWeight: '800'}}>{deckDetails.name}</h3>
+
+                                <p style={{width: '240px'}}>{deckDetails.description}</p>
+
+                                <p>Cards in deck: {deckCards.length}</p>
+                            </div>
+                            <div className="details-lowerright">
+                                <h3>Comments feature coming soon!</h3>
+                            </div>
+
                     </div>
                 </div>
             </div>
-            <div className="lower-details">
-                <div className="details-left">
-                    {deckCards.length > 0 ? (
-                        deckCards.map((card) => (
-
-                            <OpenModalMenuItem
-                            itemText= {<img key={card.id} className="details-card" src={card.image.image_url} alt="Card Image" />}
-                            onItemClick={() => setShowMenu(false)}
-                            modalComponent={<CardModal url={card.image.image_url}/>}
-                            />
-                        ))
-                    ) : (
-                        <div className="no-image">No image available</div>
-                    )}
-                </div>
-
-                <div className="details-right">
-                        <div className="details-upperright">
-                            <h5>owner: {deckDetails.deck_owner.username}</h5>
-                            <h3 style={{fontWeight: '800'}}>{deckDetails.name}</h3>
-
-                            <p style={{width: '240px'}}>{deckDetails.description}</p>
-
-                            <p>Cards in deck: {deckCards.length}</p>
-                        </div>
-                        <div className="details-lowerright">
-                            <h3>Comments feature coming soon!</h3>
-                        </div>
-
-                </div>
-            </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 

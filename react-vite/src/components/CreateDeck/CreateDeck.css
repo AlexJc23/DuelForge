@@ -3,17 +3,148 @@
     width: 75px;
 }
 
-.josh {
-    height: 100px;
-    width: 100px;
-    border: 1px solid white;
-}
 
-.close-btn {
-    background-color: blue;
+
+
+.close-btn:hover {
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.571);
 }
 
 .itms-deck {
     display: flex;
-    
+
+}
+
+.deck-form {
+    width: 45%;
+    height: 670px;
+}
+
+.details-body-decks{
+    width: 80%;
+    margin: 20px auto;
+}
+
+.create-deck{
+    display: flex;
+    gap: 90px;
+    justify-content: center;
+}
+
+.cards-form{
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.123);
+    gap: 8px;
+    flex-flow: wrap;
+    width: 40%;
+    margin-top: 30px;
+    height: 680px;
+    overflow: scroll;
+    justify-content: center;
+    padding: 10px 0 0 0;
+    border-radius: 6px;
+}
+.itms-deck{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+/* #cards-form {
+
+
+    min-height: 100px;
+    max-height: 200px;
+
+    overflow: scroll;
+} */
+#cards-form h2 {
+    margin: 10px 0;
+}
+
+
+.glow-on-hover-create-in-deck {
+    width: 100%;
+    gap: 5px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    max-height: 200px;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111111;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+    margin: 30px 50px 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.071);
+}
+.glow-on-hover-create-in-deck a{
+    color: white;
+    text-decoration: none;
+}
+
+.glow-on-hover-create-in-deck:before {
+    content: '';
+    background: linear-gradient(45deg, #0f5167, #00bfff, #98def5, #ecf5f8, #3899b9, #6c8990);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    /* height: calc(100% + 4px);
+     */
+    max-height: 200px;
+    color: white;
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+
+}
+
+
+.glow-on-hover-create-in-deck:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover-create-in-deck:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+
+.itms-deck{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.137);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.itms-deck:hover{
+    background-color: rgba(252, 252, 252, 0.695);
+    padding: 5px;
+    color: black;
+    border-radius: 5px;
 }

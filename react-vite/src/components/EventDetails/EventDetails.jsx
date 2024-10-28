@@ -22,11 +22,10 @@ const EventDetails = () => {
     const user = useSelector((state) => state.session.user);
     const eventDetails = useSelector((state) => state.eventsReducer.eventDetail.event);
 
-    // State for coordinates
-    console.log('this one   ',eventDetails)
+
 
     const handleGoBack = () => {
-        navigate(-1);
+        navigate('/events');
     };
 
     useEffect(() => {
@@ -76,7 +75,7 @@ const EventDetails = () => {
         <div className="event-details-body">
             <div className="top-details">
                 <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
-                    <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
+                    <FaArrowLeftLong style={{ marginRight: '5px' }} /> Events
                 </button>
                 <div style={{ display: 'flex', gap: '5px', justifyContent: 'center', alignItems: 'center' }}>
                     <button onClick={handleEditBtn} className="glow-on-hover" style={{ margin: '0 10px 20px 0' }} hidden={(!user || user.id !== eventDetails.event_owner.id)}>

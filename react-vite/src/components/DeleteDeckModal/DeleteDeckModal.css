@@ -12,7 +12,7 @@
 }
 
 .delete-title {
-    color: #00bfff;
+    color: #ff3d00;
     font-size: 24px;
     margin-bottom: 10px;
     text-align: center;
@@ -26,7 +26,7 @@
 }
 
 .delete-button {
-    background: linear-gradient(45deg, #ff5c00, #ff9f00);
+    background: linear-gradient(45deg, #ff3d00, #ff7f00);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -38,7 +38,7 @@
 
 .delete-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(255, 92, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(255, 61, 0, 0.5);
 }
 
 .keep-button {

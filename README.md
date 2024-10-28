@@ -1,131 +1,202 @@
-# Flask React Project
+# DuelForge
 
-This is the starter for the Flask React project.
+https://duelforge.onrender.com/
 
-## Getting started
+## About DuelForge
 
-1. Clone this repository (only this branch).
 
-2. Install dependencies.
 
-   ```bash
-   pipenv install -r requirements.txt
-   ```
+DuelForge is a web application tailored for Yu-Gi-Oh! card enthusiasts. It empowers users to create, customize, and manage their own decks with an intuitive interface. Users can explore a diverse array of decks shared by the community, facilitating collaboration and inspiration among players. In addition, DuelForge offers robust event management features, allowing users to discover, participate in, and organize Yu-Gi-Oh! events. This comprehensive platform enhances the player experience by providing essential tools for both deck-building and community engagement within the Yu-Gi-Oh! ecosystem.
 
-3. Create a __.env__ file based on the example with proper settings for your
-   development environment.
+### Setting up the project
 
-4. Make sure the SQLite3 database connection URL is in the __.env__ file.
+# DuelForge
 
-5. This starter organizes all tables inside the `flask_schema` schema, defined
-   by the `SCHEMA` environment variable.  Replace the value for
-   `SCHEMA` with a unique name, **making sure you use the snake_case
-   convention.**
+DuelForge is a web application designed for Yu-Gi-Oh! card players. It allows users to create and manage decks, view other decks, and participate in events.
 
-6. Get into your pipenv, migrate your database, seed your database, and run your
-   Flask app:
+## Prerequisites
 
-   ```bash
-   pipenv shell
-   ```
+Before you begin, ensure you have the following installed on your machine:
 
-   ```bash
-   flask db upgrade
-   ```
+- **Node.js** (version 14 or higher)
+- **Python** (version 3.7 or higher)
+- **pip** (Python package installer)
 
-   ```bash
-   flask seed all
-   ```
+## Installation Instructions
 
-   ```bash
-   flask run
-   ```
+### 1. Clone the Repository
 
-7. The React frontend has no styling applied. Copy the __.css__ files from your
-   Authenticate Me project into the corresponding locations in the
-   __react-vite__ folder to give your project a unique look.
+First, clone the repository to your local machine:
 
-8. To run the React frontend in development, `cd` into the __react-vite__
-   directory and run `npm i` to install dependencies. Next, run `npm run build`
-   to create the `dist` folder. The starter has modified the `npm run build`
-   command to include the `--watch` flag. This flag will rebuild the __dist__
-   folder whenever you change your code, keeping the production version up to
-   date.
+```bash
+git clone https://github.com/yourusername/duelForge.git
+cd duelForge
+2. Set Up the Backend
+``````
+Navigate to the backend directory:
+bash
 
-## Deployment through Render.com
+```
+cd backend
+Create a virtual environment (optional but recommended):
+bash
+```
+```
+python -m venv venv
+Activate the virtual environment:
+On macOS/Linux:
+bash
+```
+```
+source venv/bin/activate
+On Windows:
+bash
+``````
+venv\Scripts\activate
+Install the required Python packages:
+bash
 
-First, recall that Vite is a development dependency, so it will not be used in
-production. This means that you must already have the __dist__ folder located in
-the root of your __react-vite__ folder when you push to GitHub. This __dist__
-folder contains your React code and all necessary dependencies minified and
-bundled into a smaller footprint, ready to be served from your Python API.
+```
+pip install -r requirements.txt
+Run the Flask server:
+bash
+```
+flask run
+Set Up the Frontend
+Open a new terminal window and navigate to the frontend directory:
+bash
 
-Begin deployment by running `npm run build` in your __react-vite__ folder and
-pushing any changes to GitHub.
+```
+cd frontend
+Install the necessary Node packages:
+bash
+```
+npm install
+Start the Vite development server:
+bash
+```
+npm run dev
+4. Access the Application
+Once both servers are running, you can access the application in your web browser at:
 
-Refer to your Render.com deployment articles for more detailed instructions
-about getting started with [Render.com], creating a production database, and
-deployment debugging tips.
+arduino
 
-From the Render [Dashboard], click on the "New +" button in the navigation bar,
-and click on "Web Service" to create the application that will be deployed.
-
-Select that you want to "Build and deploy from a Git repository" and click
-"Next". On the next page, find the name of the application repo you want to
-deploy and click the "Connect" button to the right of the name.
-
-Now you need to fill out the form to configure your app. Most of the setup will
-be handled by the __Dockerfile__, but you do need to fill in a few fields.
-
-Start by giving your application a name.
-
-Make sure the Region is set to the location closest to you, the Branch is set to
-"main", and Runtime is set to "Docker". You can leave the Root Directory field
-blank. (By default, Render will run commands from the root directory.)
-
-Select "Free" as your Instance Type.
-
-### Add environment variables
-
-In the development environment, you have been securing your environment
-variables in a __.env__ file, which has been removed from source control (i.e.,
-the file is gitignored). In this step, you will need to input the keys and
-values for the environment variables you need for production into the Render
-GUI.
-
-Add the following keys and values in the Render GUI form:
-
-- SECRET_KEY (click "Generate" to generate a secure secret for production)
-- FLASK_ENV production
-- FLASK_APP app
-- SCHEMA (your unique schema name, in snake_case)
-
-In a new tab, navigate to your dashboard and click on your Postgres database
-instance.
-
-Add the following keys and values:
-
-- DATABASE_URL (copy value from the **External Database URL** field)
+```
+http://localhost:3000
 
 **Note:** Add any other keys and values that may be present in your local
 __.env__ file. As you work to further develop your project, you may need to add
 more environment variables to your local __.env__ file. Make sure you add these
 environment variables to the Render GUI as well for the next deployment.
+``````
 
-### Deploy
+## Technologies Used
 
-Now you are finally ready to deploy! Click "Create Web Service" to deploy your
-project. The deployment process will likely take about 10-15 minutes if
-everything works as expected. You can monitor the logs to see your Dockerfile
-commands being executed and any errors that occur.
+### Frontend
+- **React**: A JavaScript library for building user interfaces.
+- **Vite**: A fast development server and build tool for modern web applications.
+- **CSS**: For styling the application.
+- **Redux**: For state management across the application.
 
-When deployment is complete, open your deployed site and check to see that you
-have successfully deployed your Flask application to Render! You can find the
-URL for your site just below the name of the Web Service at the top of the page.
+### Backend
+- **Flask**: A lightweight WSGI web application framework for Python.
+- **SQLAlchemy**: An SQL toolkit and Object-Relational Mapping (ORM) system for Python.
+- **Flask-CORS**: A Flask extension for handling Cross-Origin Resource Sharing (CORS).
+- **Flask-Migrate**: A Flask extension for handling SQLAlchemy database migrations.
 
-**Note:** By default, Render will set Auto-Deploy for your project to true. This
-setting will cause Render to re-deploy your application every time you push to
-main, always keeping it up to date.
+### Database
+- **PostgreSQL**: An open-source relational database management system.
 
-[Render.com]: https://render.com/
-[Dashboard]: https://dashboard.render.com/
+### APIs
+- **Yu-Gi-Oh! API**: For accessing Yu-Gi-Oh! card data (if applicable).
+
+### Development Tools
+- **Git**: Version control system for tracking changes in the code.
+- **Node.js**: JavaScript runtime for executing JavaScript code outside the browser.
+- **npm**: Package manager for Node.js, used for managing frontend dependencies.
+
+### Miscellaneous
+- **dotenv**: A module to load environment variables from a `.env` file.
+
+## To-Dos / Future Features
+
+- **Comment CRUD**: Implement create, read, update, and delete functionality for comments on decks and events.
+- **User Decks/Events View**: Allow users to view all decks and events associated with their account.
+- **Messaging Feature**: Develop a messaging system for users to communicate with each other regarding decks and events.
+
+
+## Technical Implementation Details
+
+### Yu-Gi-Oh! API Integration
+Integrating the Yu-Gi-Oh! API required careful consideration of their usage rules and limitations. To comply with their guidelines, I ensured that:
+- **Rate Limiting**: I implemented caching strategies to minimize the number of requests sent to the API.
+- **Data Storage**: Only necessary data is stored locally, ensuring that I respect the API's data usage policies.
+- **Error Handling**: Robust error handling was implemented to gracefully manage API request failures.
+
+**Code Snippet**: Below is an example of how I integrated the Yu-Gi-Oh! API to fetch card details:
+
+```javascript
+// Fetch card details from the Yu-Gi-Oh! API
+const fetchCardDetails = async (cardId) => {
+    try {
+        const response = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${cardId}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const cardData = await response.json();
+        return cardData;
+    } catch (error) {
+        console.error('Error fetching card details:', error);
+    }
+};
+``````
+Google Maps API Integration
+Integrating the Google Maps API posed challenges in handling geolocation and map rendering. Key considerations included:
+
+API Key Management: Ensuring the API key is securely managed to prevent unauthorized access.
+Dynamic Rendering: Implementing dynamic rendering based on user interactions with event locations.
+Code Snippet: Here’s how I implemented the Google Maps API to display event locations:
+
+javascript
+
+// Initialize and display Google Map
+``````
+const initMap = () => {
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8,
+    });
+
+    const marker = new google.maps.Marker({
+        position: { lat: -34.397, lng: 150.644 },
+        map,
+        title: "Event Location",
+    });
+};
+``````
+Drag and Drop Feature
+Implementing a drag-and-drop feature for deck building required careful consideration of user experience and state management:
+
+State Management: Ensured smooth updates to the deck state during drag-and-drop operations.
+Accessibility: Made the feature accessible to all users, including keyboard navigation support.
+Code Snippet: Below is an example of handling drag-and-drop events in a React component:
+
+javascript
+``````
+const handleDrop = (event) => {
+    event.preventDefault();
+    const cardId = event.dataTransfer.getData("text/plain");
+    // Update the deck state with the dropped card
+    setDeck(prevDeck => [...prevDeck, cardId]);
+};
+
+const handleDragStart = (event, cardId) => {
+    event.dataTransfer.setData("text/plain", cardId);
+};
+``````
+Challenges Faced
+During development, I encountered several challenges, including:
+
+API Rate Limits: Managing request limits imposed by the Yu-Gi-Oh! API required optimizing data fetching.
+User Experience: Balancing functionality and user experience, particularly for the drag-and-drop feature, took iterative design and testing.
+Cross-Origin Requests: Addressing CORS issues when making requests to external APIs required proper server configuration.

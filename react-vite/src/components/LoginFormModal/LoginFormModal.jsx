@@ -28,10 +28,25 @@ function LoginFormModal() {
     }
   };
 
+  const handleDemo = async (e) => {
+    e.preventDefault();
+
+    const serverResponse = await dispatch(
+      thunkLogin({ email: "demo@aa.io", password: "password" }))
+
+      if (serverResponse) {
+        setErrors(serverResponse);
+      } else {
+        closeModal()
+      }
+      closeModal()
+    }
+
   return (
-    <>
+    <div className="log-in">
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
+        <section className="login-field glow-on-hover-login">
         <label>
           Email
           <input
@@ -42,7 +57,9 @@ function LoginFormModal() {
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
-        <label>
+      </section>
+      <section className="login-field glow-on-hover-login">
+        <label >
           Password
           <input
             type="password"
@@ -52,9 +69,12 @@ function LoginFormModal() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+        </section>
+        <button style={{width:'100%', border: 'solid 1px rgba(255, 255, 255, 0.118)'}} className="glow-on-hover" type="submit">Log In</button>
+        <p style={{textAlign: 'center' ,margin: '0, auto', color: 'rgba(255, 255, 255, 0.451'}}>or</p>
+      <button style={{width:'90%', marginLeft: '17px', border: 'solid 1px rgba(255, 255, 255, 0.118)'}} className="glow-on-hover" onClick={handleDemo}>Demo Login</button>
       </form>
-    </>
+    </div>
   );
 }
 

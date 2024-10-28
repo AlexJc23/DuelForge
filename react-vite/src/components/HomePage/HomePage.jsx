@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
 import './HomePage.css';
 import { getEvents } from "../../redux/events";
+import Footer from "../Footer/Footer";
 
 const HomePage = () => {
     const decks = useSelector(state => state.decksReducer.allDecks);
@@ -28,7 +29,7 @@ const HomePage = () => {
     // Get 3 random decks
     const randomDecks = getRandomStuff(allDecks, 4);
     const randomEvents = getRandomStuff(allEvents, 3)
-    console.log(randomEvents)
+
 
     // Dispatch action to fetch decks on component mount
     useEffect(() => {
@@ -47,7 +48,7 @@ const HomePage = () => {
                 <span className="let5">i</span>
                 <span className="let6">n</span>
                 <span className="let7">g</span>
-            </h1></div>): (
+            </h1></div>): (<>
         <div className="home-content">
             <div className="deck-featured">
                 <h3 >Featured Decks <span className="featured-line" ></span></h3>
@@ -67,7 +68,7 @@ const HomePage = () => {
                             ) : (
                                 <div className="no-image">No image available</div>
                             )}
-                            <p style={{marginTop: '19px', marginLeft: '16px'}}>{successfulDeck.name}</p>
+                            <p style={{marginTop: '19px', marginLeft: '16px', color: 'white'}}>{successfulDeck.name}</p>
                         </NavLink>
                     ))}
                     <div  class="glow-on-hover2">
@@ -98,6 +99,8 @@ const HomePage = () => {
                 </div>
             </div>
         </div>
+            <Footer />
+            </>
     );
 };
 

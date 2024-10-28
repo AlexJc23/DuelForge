@@ -2,19 +2,19 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import { deleteEvent } from "../../redux/events";
 import { useNavigate } from 'react-router-dom';
+import './DeleteEventModal.css'
 
 const DeleteEventModal = ({ event_id }) => {
-
     const { closeModal } = useModal();
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleDelete = () => {
         dispatch(deleteEvent(event_id))
             .then(() => {
                 closeModal();
             })
-            .then(navigate('/current'))
+            .then(navigate('/events'));
     };
 
     return (
@@ -28,7 +28,7 @@ const DeleteEventModal = ({ event_id }) => {
                 No (Keep Event)
             </button>
         </div>
-    )
-}
+    );
+};
 
 export default DeleteEventModal;

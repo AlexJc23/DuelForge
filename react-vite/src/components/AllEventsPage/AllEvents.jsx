@@ -6,6 +6,7 @@ import { GiTicket } from "react-icons/gi";
 import { FaMapLocationDot } from "react-icons/fa6";
 import './AllEvents.css'
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import Footer from "../Footer/Footer";
 
 const AllEvents = () => {
     const events = useSelector(state => state.eventsReducer.allEvents)
@@ -59,7 +60,7 @@ const AllEvents = () => {
     }
 
     const handleGoBack = () => {
-        navigate(-1);
+        navigate('/home');
     };
 
     function formatDate(dateString) {
@@ -72,11 +73,12 @@ const AllEvents = () => {
     }
 
     return (
+        <>
         <div className="events-container">
             <div>
                 <div className="top-details">
                     <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
-                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Back
+                        <FaArrowLeftLong style={{ marginRight: '5px' }} /> Home
                     </button>
                 </div>
             </div>
@@ -90,11 +92,11 @@ const AllEvents = () => {
                             <div style={{display: 'flex', gap: '10px', alignItems: 'center', height: '80px'}}>
                                 <span><FaMapLocationDot style={{fontSize: '20px'}}/></span>
                                 <p style={{overflow: 'hidden'}}> {successfulEvent.location}</p>
-                                {console.log(successfulEvent)}
+
                             </div>
                         </div>
                         <div style={{display: 'flex', gap: '10px', alignSelf: 'self-start', margin: ' 0 0 8px 19px', justifySelf: 'self-end'}}>
-                            <span><GiTicket style={{color: 'white', fontSize: '20px'}}/></span>
+                            <span><GiTicket style={{ fontSize: '20px'}}/></span>
                             <p>${successfulEvent.price.toFixed(2)}</p>
                         </div>
                         <div style={{borderTop: '1px solid gray', paddingTop: '10px', margin: 'auto auto 10px auto', width: '100%'}} id="dates-containter">
@@ -105,6 +107,8 @@ const AllEvents = () => {
                 ))}
             </ul>) : (<h1>No events were found...</h1>)}
         </div>
+            <Footer />
+        </>
     )
 }
 

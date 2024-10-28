@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CiMenuFries } from "react-icons/ci";
-import { thunkLogin, thunkLogout } from "../../redux/session";
+import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import { IoMdClose } from "react-icons/io";
 import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom";
 import { useModal } from "../../context/Modal";
+import { useLocation } from 'react-router-dom';
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function ProfileButton() {
 
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
+  const location = useLocation();
 
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -44,20 +46,6 @@ function ProfileButton() {
     setShowMenu(false);
   };
 
-  const handleDemo = async (e) => {
-    e.preventDefault();
-
-    const serverResponse = await dispatch(
-      thunkLogin({ email: "demo@aa.io", password: "password" }))
-
-      if (serverResponse) {
-        setErrors(serverResponse);
-      } else {
-        closeModal()
-      }
-      closeModal()
-    }
-
   return (
     <>
       <button
@@ -66,15 +54,35 @@ function ProfileButton() {
       >
         {showMenu ? <IoMdClose style={{ color: '#00bfff', fontSize: '30px' }} /> : <CiMenuFries style={{ color: '#00bfff', fontSize: '30px' }} />}
       </button>
-      <ul className={"profile-dropdown"} ref={ulRef} style={{ display: showMenu ? 'block' : 'none' }}>
+      <ul className={"profile-dropdown"} ref={ulRef} style={{ display: showMenu ? 'block' : 'none', color: 'black' }}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.email}</li>
-            <li><NavLink style={{color: 'black'}} to={'/events/create'}>Create Event</NavLink></li>
-            <li><NavLink style={{color: 'black'}} to={'/decks/create'}>Create Deck</NavLink></li>
+            <div>
+              <li>{user.username}</li>
+              <li>{user.email}</li>
+            </div>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <NavLink to={'/decks'} className={location.pathname === '/decks' ? 'active' : ''}>
+                All Decks
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={'/events'} className={location.pathname === '/events' ? 'active' : ''}>
+                All Events
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={'/events/create'} className={location.pathname === '/events/create' ? 'active' : ''}>
+                Create Event
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={'/decks/create'} className={location.pathname === '/decks/create' ? 'active' : ''}>
+                Create Deck
+              </NavLink>
+            </li>
+            <li>
+              <button className="glow-on-hover2" onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
@@ -89,7 +97,6 @@ function ProfileButton() {
               onItemClick={() => setShowMenu(false)}
               modalComponent={<SignupFormModal />}
             />
-          <button onClick={handleDemo}>Demo Login</button>
           </>
         )}
       </ul>

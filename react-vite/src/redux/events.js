@@ -236,8 +236,6 @@ export const deleteEvent = (event_id) => async (dispatch) => {
     if (res.ok) {
         dispatch(removeEvent(event_id))
 
-
-        await dispatch(loadEvent())
         return res
     }
 }

@@ -15,6 +15,7 @@ const DeleteEventModal = ({ event_id }) => {
                 closeModal();
             })
             .then(navigate('/events'));
+            closeModal()
     };
 
     return (

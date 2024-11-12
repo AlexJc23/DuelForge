@@ -33,11 +33,7 @@ def allDecks():
         decks_table = db.session.query(DeckCard).filter(DeckCard.deck_id == deck.id).all()
 
         # Query the deck owner
-        user = db.session.query(User).filter(User.id == deck.user_id).first().to_dict()
 
-        # If owner_name is provided, filter by owner
-        if owner_name and owner_name.lower() not in user['username'].lower():
-            continue  # Skip this deck if owner doesn't match the search
 
         cards = []
         for deck_card_association in decks_table:
@@ -58,10 +54,11 @@ def allDecks():
 
                 cards.append(card_dict)
 
-        solo_deck['deck_owner'] = user
+
         solo_deck['cards'] = cards
 
         decks_list.append(solo_deck)
+
 
     return jsonify(decks_list)
 
@@ -351,3 +348,45 @@ def removeComment(deck_id, comment_id):
         db.session.commit()
 
         return {'message': "Comment deleted successfully."}
+
+@decks_routes.route('/user/<int:user_id>')
+def decksWithUserId(user_id):
+    """
+    GET ALL DECKS for the user_id that they have created.
+    """
+    # Retrieve the user and check if they exist
+    user = db.session.query(User).filter(User.id == user_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user_dict = user.to_dict()
+    # Query all decks created by this user
+    decks = db.session.query(Deck).filter(Deck.user_id == user_id).all()
+
+    decks_list = []
+
+    for deck in decks:
+        # Convert each deck to a dictionary and prepare cards list
+        solo_deck = deck.to_dict()
+
+        # Query deck-card associations for the current deck
+        deck_cards = db.session.query(DeckCard).filter(DeckCard.deck_id == deck.id).all()
+
+        cards = []
+        for deck_card in deck_cards:
+            # Retrieve the card and its images in one go
+            card = db.session.query(Card).join(CardImage, Card.id == CardImage.card_id)\
+                         .filter(Card.id == deck_card.card_id).first()
+            if card:
+                card_dict = card.to_dict()
+                card_images = db.session.query(CardImage).filter(CardImage.card_id == card.id).all()
+                # Add images to the card dictionary
+                card_dict['images'] = [image.to_dict() for image in card_images]
+                cards.append(card_dict)
+
+        # Add user, cards, and deck information to the deck dictionary
+        solo_deck['deck_owner'] = user_dict
+        solo_deck['cards'] = cards
+        decks_list.append(solo_deck)
+
+    return jsonify(decks_list)

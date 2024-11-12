@@ -15,6 +15,7 @@ def users():
     return {'users': [user.to_dict() for user in users]}
 
 
+
 @user_routes.route('/<int:id>')
 @login_required
 def user(id):
@@ -23,3 +24,17 @@ def user(id):
     """
     user = User.query.get(id)
     return user.to_dict()
+
+@user_routes.route('profile/<int:id>')
+def userProfile(id):
+    """
+    Query for a user by id and returns that user in a dictionary
+    """
+    user = User.query.get(id)
+    user_dict = {
+        'bio': user.bio,
+        'username': user.username,
+
+    }
+
+    return user_dict

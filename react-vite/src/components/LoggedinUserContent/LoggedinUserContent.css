@@ -1,0 +1,155 @@
+
+.profile-body {
+   display: flex;
+   margin: 50px auto 100px auto;
+   max-width: 1200px;
+   /* border: 1px solid yellow; */
+   height: 100%;
+
+
+}
+.expand-button {
+    margin-top: 40px;
+    padding: 8px 16px;
+    color: #ffffff4e;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: fit-content;
+    background-color: none;
+    background: none;
+}
+
+.expand-button:hover {
+    color: #2980b9;
+}
+
+.user-right{
+    max-width: 300px;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 30px;
+    padding-left: 50px;
+    border-left: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.user-left {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    /* border: 1px solid yellow; */
+}
+
+.left-top{
+    display: flex;
+    width: 100%;
+
+}
+
+
+
+.profile-deck-title{
+    margin: 30px auto 0 60px;
+}
+
+.decks-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.decks-prfl ul {
+    list-style: none;
+    padding: 0;
+    margin: 50px;
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+.decks-prfl li {
+    position: relative;
+}
+.next-prev {
+    background-color: aquamarine;
+}
+
+
+.decks-prfl .card {
+    position: relative;
+    width: 120px;
+    height: 150px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.decks-prfl {
+    display: flex;
+    flex-direction: row; /* Force items to align in a row */
+    flex-wrap: wrap; /* Allow items to wrap if there are too many to fit in one line */
+    gap: 20px; /* Adjust the spacing between deck items */
+    margin-top: 20px;
+    /* justify-content: flex-start; */
+    align-items: center;
+}
+.events-prfl {
+    display: flex;
+    flex-direction: row; /* Force items to align in a row */
+    flex-wrap: wrap; /* Allow items to wrap if there are too many to fit in one line */
+    gap: 20px; /* Adjust the spacing between deck items */
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+}
+.events-container-profl{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-width: 300px;
+    max-width: 660px;
+    gap: 20px;
+
+}
+
+.decks-container-profl {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    min-width: 300px;
+    max-width: 660px; /* Adjust based on your desired container width */
+}
+
+.card-prfl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px; /* Set width for each deck card */
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+.no-content{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    /* border: 1px solid yellow; */
+    gap: 10px;
+}
+.left-bottom {
+    margin-top: 50px;
+}
+
+.events-left {
+    display: flex;
+    padding-bottom: 30px;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}

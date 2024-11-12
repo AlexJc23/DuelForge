@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { getOneDeck } from "../../redux/decks";
 import { getComments } from "../../redux/comments";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -84,6 +84,7 @@ if (!deckDetails) {
                         <button className="glow-on-hover" onClick={handleEditBtn} style={{margin: '0 0 20px 0'}} hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
                             Edit
                         </button>
+                        {console.log('jjjjjj ', deckDetails.deck_owner)}
                         <div hidden={(!user || user.id !== deckDetails.deck_owner.id)}>
                             <OpenModalButton
                                 buttonText={"Delete"}
@@ -111,7 +112,7 @@ if (!deckDetails) {
 
                     <div className="details-right">
                             <div className="details-upperright">
-                                <h5>owner: {deckDetails.deck_owner.username}</h5>
+                                <h5>owner: <NavLink to={`/profile/${deckDetails.deck_owner.id}`} >{deckDetails.deck_owner.username}</NavLink></h5>
                                 <h3 style={{fontWeight: '800'}}>{deckDetails.name}</h3>
 
                                 <p style={{width: '240px'}}>{deckDetails.description}</p>

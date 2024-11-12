@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const ALL_EVENTS = 'session/allEvents';
 const ONE_EVENT = 'session/oneEvents';
 const CURRENTUSER_EVENTS = 'session/currentuserEvents';
+const USER_EVENTS = 'session/userEvents';
 const ADD_EVENT = 'session/addEvent';
 const EDIT_EVENT = 'session/editEvent';
 const DELETE_EVENT = 'session/deleteEvent'
@@ -27,6 +28,12 @@ const loadUserEvents = (events) => ({
     type: CURRENTUSER_EVENTS,
     events
 })
+
+//all events for user_id
+const loadUserEventsById = (events) => ({
+    type: USER_EVENTS,
+    events
+});
 
 
 // add a event
@@ -93,6 +100,19 @@ export const loggedInUserEvent = () =>  async (dispatch) => {
     }
     return res
 }
+
+
+// fetch all events created by user_id
+export const getUserEventsById = (user_id) => async (dispatch) => {
+    const res = await csrfFetch(`/api/events/user/${user_id}`);
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(loadUserEventsById(data));
+        return data;
+    }
+    return res;
+};
 
 // add event
 export const createEvent = (event) => async (dispatch) => {
@@ -271,6 +291,16 @@ function eventsReducer(state = initialState, action) {
                 ...state,
                 userEvents
             }
+        }
+        case USER_EVENTS: {
+            const userEvents = {};
+            action.events.forEach((event) => {
+                userEvents[event.id] = event;
+            });
+            return {
+                ...state,
+                userEvents // store the events by user_id
+            };
         }
         case ADD_EVENT:
             const newEvent = action.payload;

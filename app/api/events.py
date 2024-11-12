@@ -44,14 +44,8 @@ def allEvents():
         image_dict = [image.to_dict() for image in event_images]
         event_dict['images'] = image_dict
 
-        # Query the event owner
-        user = db.session.query(User).filter(event.owner_id == User.id).first().to_dict()
 
-        # If owner_name is provided, filter by owner's username
-        if owner_name and owner_name.lower() not in user['username'].lower():
-            continue  # Skip this event if owner doesn't match the search
 
-        event_dict['event_owner'] = user
         events_list.append(event_dict)
 
     return jsonify(events_list)
@@ -114,6 +108,9 @@ def eventDetails(event_id):
     event_dict['event_owner'] = event_owner_dict
 
     return jsonify(event_dict)
+
+
+
 
 @event_routes.route('/', methods=['POST'])
 @login_required
@@ -276,3 +273,41 @@ def edit_image(event_id):
         return jsonify({**updated_image, 'event_id': event_id}), 200
     else:
         return {'errors': form.errors}, 400
+
+
+
+
+@event_routes.route('/user/<int:user_id>')
+def eventsWithUserId(user_id):
+    """
+    GET ALL Events for the user_id that they have created.
+    """
+    # Retrieve the user and check if they exist
+    user = db.session.query(User).filter(User.id == user_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user_dict = user.to_dict()
+
+    # Query all events created by this user
+    events = db.session.query(Event).filter(Event.owner_id == user_id).all()
+
+    events_list = []
+
+    for event in events:
+        # Convert each event to a dictionary
+        solo_event = event.to_dict()
+
+        # Query event images associated with the current event
+        event_images = db.session.query(EventImage).filter(EventImage.event_id == event.id).all()
+        images = [image.to_dict() for image in event_images]
+
+        # Add images to the event dictionary
+        solo_event['image'] = images
+
+        # Add event owner info
+        solo_event['event_owner'] = user_dict
+
+        events_list.append(solo_event)
+
+    return jsonify(events_list)

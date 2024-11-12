@@ -1,5 +1,7 @@
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
+const USER_PROFILE = 'session/setUserProfile';
+
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -8,6 +10,11 @@ const setUser = (user) => ({
 
 const removeUser = () => ({
   type: REMOVE_USER
+});
+
+const userById = (profile) => ({
+  type: USER_PROFILE,
+  payload: profile
 });
 
 export const thunkAuthenticate = () => async (dispatch) => {
@@ -63,17 +70,33 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
 };
 
-const initialState = { user: null };
+export const thunkGetUserProfile = (id) => async (dispatch) => {
+  const response = await fetch(`/api/users/profile/${id}`);
+
+  if (response.ok) {
+      const data = await response.json();
+      dispatch(userById(data));
+      return data;
+  } else {
+      return { error: "Failed to load user profile" };
+  }
+};
+
+
+const initialState = { user: null, userProfile: null };
 
 function sessionReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_USER:
-      return { ...state, user: action.payload };
-    case REMOVE_USER:
-      return { ...state, user: null };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case SET_USER:
+            return { ...state, user: action.payload };
+        case REMOVE_USER:
+            return { ...state, user: null };
+        case USER_PROFILE:
+            return { ...state, userProfile: action.payload };
+        default:
+            return state;
+    }
 }
+
 
 export default sessionReducer;

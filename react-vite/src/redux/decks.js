@@ -7,6 +7,8 @@ const CURRENTUSER_DECKS = 'session/currentuserDecks';
 const ADD_DECK = 'session/addDeck';
 const EDIT_DECK = 'session/editDeck';
 const DELETE_DECK = 'session/deleteDeck'
+const USER_DECKS = 'session/userDecks';
+
 
 
 
@@ -28,6 +30,11 @@ const loadUserDecks = (decks) => ({
     decks
 })
 
+// load decks for a specific user
+const fetchUserDecks = (decks) => ({
+    type: USER_DECKS,
+    decks
+});
 
 // add a deck
 const addDeck = (deck) => ({
@@ -97,6 +104,18 @@ export const loggedInUserDeck = () =>  async (dispatch) => {
     }
     return res
 }
+
+// get decks by user_id
+export const getDecksByUserId = (user_id) => async (dispatch) => {
+    const res = await csrfFetch(`/api/decks/user/${user_id}`);
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(fetchUserDecks(data));
+        return data;
+    }
+    return res;
+};
 
 // add deck
 export const createDeck = (deck) => async (dispatch) => {
@@ -268,6 +287,16 @@ function decksReducer(state = initialState, action) {
                 ...state,
                 userDecks
             }
+        }
+        case USER_DECKS: {
+            const userDecks = {};
+            action.decks.forEach((deck) => {
+                userDecks[deck.id] = deck;
+            });
+            return {
+                ...state,
+                userDecks
+            };
         }
         case ADD_DECK: {
             const newDeck = action.deck;

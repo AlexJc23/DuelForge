@@ -13,6 +13,7 @@ import CreateEvent from '../components/CreateEvent/CreateEvent';
 import EditEvent from '../components/EditEvent/EditEvent';
 import CreateDeck from '../components/CreateDeck';
 import UpdateDeck from '../components/EditDeck';
+import UserProfile from '../components/UserProfile';
 
 
 export const router = createBrowserRouter([
@@ -79,8 +80,12 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        path: 'userpage',
+        path: 'profile',
         element: <LoggedinUserContent />
+      },
+      {
+        path: 'profile/:user_id',
+        element: <UserProfile />
       }
     ],
   },

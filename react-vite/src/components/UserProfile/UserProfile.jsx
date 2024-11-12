@@ -1,33 +1,46 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loggedInUserDeck } from "../../redux/decks";
-import { loggedInUserEvent } from "../../redux/events";
+import { getDecksByUserId } from "../../redux/decks";
+import { getUserEventsById } from "../../redux/events";
 import Footer from "../Footer/Footer";
-import { NavLink } from "react-router-dom";
-import './LoggedinUserContent.css';
+import { NavLink, useParams } from "react-router-dom";
+import { thunkGetUserProfile } from "../../redux/session";
 
-const LoggedinUserContent = () => {
+
+
+
+
+const UserProfile = () => {
+    const {user_id} = useParams()
+
     const [isLoading, setIsLoading] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false); // State to toggle expanded view
     const [isExpandedEvent, setIsExpandedEvent] = useState(false); // State to toggle expanded view
 
     const decks = useSelector(state => state.decksReducer.userDecks);
     const events = useSelector(state => state.eventsReducer.userEvents);
-    const currentUser = useSelector(state => state.session.user);
-
+    const profile = useSelector(state => state.session.userProfile);
+    console.log(profile)
     const allDecks = decks ? Object.values(decks) : [];
     const allEvents = events ? Object.values(events) : [];
+
+
 
     const dispatch = useDispatch();
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            await dispatch(loggedInUserDeck());
-            await dispatch(loggedInUserEvent());
+
+            await dispatch(getDecksByUserId(user_id));
+            await dispatch(getUserEventsById(user_id));
             setIsLoading(false);
         };
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, user_id]);
+
+    useEffect(() => {
+        dispatch(thunkGetUserProfile(user_id))
+    }, [dispatch, user_id])
 
     const toggleExpandDeck = () => {
         setIsExpanded(!isExpanded);
@@ -40,7 +53,7 @@ const LoggedinUserContent = () => {
     const decksToDisplay = isExpanded ? allDecks : allDecks.slice(0, 3); // Show only 3 decks if not expanded
     const eventsToDisplay = isExpandedEvent ? allEvents : allEvents.slice(0, 3); // Show only 3 decks if not expanded
 
-    console.log('yelp for help ',eventsToDisplay)
+
 
     return isLoading ? (
         <div id="loading">
@@ -121,7 +134,7 @@ const LoggedinUserContent = () => {
                                 ))}
                                 </div>
                             </div>
-                                <button  onClick={toggleExpandEvent}  className="expand-button">
+                                <button  onClick={toggleExpandEvent} hidden={allEvents.length <=3} className="expand-button">
                                     {isExpandedEvent ? "View Less" : "View All Events"}
                                 </button>
                                 </div>
@@ -129,7 +142,7 @@ const LoggedinUserContent = () => {
                     </div>
                 </div>
                 <div className="user-right">
-                    <h2>{currentUser.username}</h2>
+                    <h2>{profile ? profile.username: 'No username available'}</h2>
                     <div className="follows">
                         <p>Following</p>
                         <p>Followers</p>
@@ -139,7 +152,7 @@ const LoggedinUserContent = () => {
 
                     <div className="user-bio">
                         <h3>Bio:</h3>
-                        <p>{currentUser.bio}</p>
+                        <p>{profile ? profile.bio : "No bio available"}</p>
                     </div>
                 </div>
             </div>
@@ -147,5 +160,4 @@ const LoggedinUserContent = () => {
         </>
     );
 };
-
-export default LoggedinUserContent;
+export default UserProfile;

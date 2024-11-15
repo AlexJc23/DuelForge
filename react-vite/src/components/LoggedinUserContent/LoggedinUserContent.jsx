@@ -4,13 +4,15 @@ import { loggedInUserDeck } from "../../redux/decks";
 import { loggedInUserEvent } from "../../redux/events";
 import Footer from "../Footer/Footer";
 import { NavLink } from "react-router-dom";
+import OpenModalMenuItemCard from "../OpenModalMenuItemCard/OpenModalMenuItemCard";
 import './LoggedinUserContent.css';
+import DeleteUserAccountModal from "./DeleteUserAccntModal";
 
 const LoggedinUserContent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false); // State to toggle expanded view
     const [isExpandedEvent, setIsExpandedEvent] = useState(false); // State to toggle expanded view
-
+    const [showMenu, setShowMenu] = useState(false)
     const decks = useSelector(state => state.decksReducer.userDecks);
     const events = useSelector(state => state.eventsReducer.userEvents);
     const currentUser = useSelector(state => state.session.user);
@@ -40,7 +42,7 @@ const LoggedinUserContent = () => {
     const decksToDisplay = isExpanded ? allDecks : allDecks.slice(0, 3); // Show only 3 decks if not expanded
     const eventsToDisplay = isExpandedEvent ? allEvents : allEvents.slice(0, 3); // Show only 3 decks if not expanded
 
-    console.log('yelp for help ',eventsToDisplay)
+
 
     return isLoading ? (
         <div id="loading">
@@ -141,6 +143,11 @@ const LoggedinUserContent = () => {
                         <h3>Bio:</h3>
                         <p>{currentUser.bio}</p>
                     </div>
+                    <OpenModalMenuItemCard
+                                itemText= {'DELETE ACCNT'}
+                                onItemClick={() => setShowMenu(false)}
+                                modalComponent={<DeleteUserAccountModal user_id={currentUser.id}/>}
+                                />
                 </div>
             </div>
             <Footer />

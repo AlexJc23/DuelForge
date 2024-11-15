@@ -1,7 +1,9 @@
+import { csrfFetch } from "./csrf";
+
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const USER_PROFILE = 'session/setUserProfile';
-
+const REMOVE_PROFILE = 'session/removeProfile'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -16,6 +18,13 @@ const userById = (profile) => ({
   type: USER_PROFILE,
   payload: profile
 });
+
+// remove account from db
+const removeUserFromDb = (user_id) => ({
+  type: REMOVE_PROFILE,
+  user_id
+})
+
 
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
@@ -83,6 +92,26 @@ export const thunkGetUserProfile = (id) => async (dispatch) => {
 };
 
 
+// remove user from db
+export const thunkDeleteAccount = (user_id, password) => async (dispatch) => {
+  const response = await fetch(`/api/users/${user_id}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password }),
+  });
+
+  if (response.ok) {
+    dispatch(removeUser())
+    dispatch(removeUserFromDb(user_id));
+  } else if (!response.ok) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: 'Something went wrong. Please try again' };
+  }
+};
+
+
 const initialState = { user: null, userProfile: null };
 
 function sessionReducer(state = initialState, action) {
@@ -93,6 +122,8 @@ function sessionReducer(state = initialState, action) {
             return { ...state, user: null };
         case USER_PROFILE:
             return { ...state, userProfile: action.payload };
+        case REMOVE_PROFILE:
+            return { ...state, userProfile: null, user: null };
         default:
             return state;
     }

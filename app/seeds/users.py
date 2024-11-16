@@ -264,7 +264,16 @@ def seed_users():
         "password": "password",
         "image_url": "https://example.com/images/starlightqueen99.jpg",
         "bio": "Hey, I’m Hannah, known as StarlightQueen99. I’m all about shining plays with my starlight deck. Ready to duel under the stars?"
-    }
+    },
+    {
+    "first_name": "Jacob",
+    "last_name": "Carter",
+    "email": "jacob.carter@example.com",
+    "username": "DragonMasterX",
+    "password": "securepassword",
+    "image_url": "https://example.com/images/dragonmasterx.jpg",
+    "bio": "I’m Jacob, aka DragonMasterX. My dragon-themed deck is unstoppable! Let’s see if you can handle the fire!"
+}
 ]
 
 

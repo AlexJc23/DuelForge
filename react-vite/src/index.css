@@ -126,3 +126,10 @@ p{
   margin-top: 5px;
   width: 100%;
 }
+
+.error{
+  color: rgba(255, 0, 0, 0.708);
+  margin-top: 5px;
+  width: 100%;
+  font-size: x-small;
+}

@@ -42,6 +42,30 @@ def userProfile(id):
     return user_dict
 
 
+@user_routes.route('/update/<int:id>', methods=['PUT'])
+@login_required
+def updateProfile(id):
+    logged_in_user = current_user.to_dict()
+
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    if logged_in_user['id'] != user.id:
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    data = request.get_json()
+    # Update the user's profile
+    if 'bio' in data:
+        user.bio = data['bio']
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    # Return the updated user data
+    return jsonify(user.to_dict()), 200
+
+
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def remove(id):

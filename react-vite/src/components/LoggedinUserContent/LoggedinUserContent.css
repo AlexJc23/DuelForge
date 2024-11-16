@@ -4,7 +4,7 @@
    margin: 50px auto 100px auto;
    max-width: 1200px;
    /* border: 1px solid yellow; */
-   height: 100%;
+   min-height: 430px;
 
 
 }
@@ -25,7 +25,8 @@
 }
 
 .user-right{
-    max-width: 300px;
+    max-width: 600px;
+    min-width: 400px;
     display: flex;
     flex-flow: column wrap;
     gap: 30px;
@@ -37,13 +38,16 @@
     display: flex;
     margin: 0 auto;
     flex-direction: column;
-    /* border: 1px solid yellow; */
+    width: 800px;
+    padding-right: 25px;
 }
 
 .left-top{
     display: flex;
     width: 100%;
 
+    justify-content: center;
+    padding-left: 20px;
 }
 
 
@@ -144,6 +148,7 @@
 }
 .left-bottom {
     margin-top: 50px;
+
 }
 
 .events-left {
@@ -151,5 +156,26 @@
     padding-bottom: 30px;
     flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+
+.delete-accnt-button {
+    margin-top: auto;
+    font-size: x-small;
+    color: rgb(90, 1, 1);
+}
+
+.delete-form{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    justify-content: center;
+}
+
+.delete-accnt-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px;
 }

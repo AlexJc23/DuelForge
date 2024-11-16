@@ -2,7 +2,8 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import { thunkDeleteAccount } from "../../redux/session";
+import { thunkDeleteAccount, thunkLogout } from "../../redux/session";
+import './LoggedinUserContent.css'
 
 const DeleteUserAccountModal = ({ user_id }) => {
     const { closeModal } = useModal();
@@ -22,6 +23,7 @@ const DeleteUserAccountModal = ({ user_id }) => {
             setError(response.error); // Display error if password is incorrect
         } else {
             closeModal();
+            dispatch(thunkLogout())
             navigate('/');
         }
     };
@@ -37,10 +39,11 @@ const DeleteUserAccountModal = ({ user_id }) => {
 
             {/* Show password input form if the user clicks 'Confirm' */}
             {showConfirmForm ? (
-                <form onSubmit={handleDelete}>
+                <form className="delete-form" onSubmit={handleDelete}>
                     <label>
                         Confirm Password to Delete Account:
                         <input
+                            style={{marginTop: '10px'}}
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -48,14 +51,16 @@ const DeleteUserAccountModal = ({ user_id }) => {
                         />
                     </label>
                     {error && <div className="error">{error}</div>} {/* Show error message if password is incorrect */}
-                    <button type="submit" className='delete-button'>Delete Account</button>
-                    <button type="button" className='keep-button' onClick={() => setShowConfirmForm(false)}>
-                        Cancel
-                    </button>
+                    <div className="delete-accnt-btns">
+                        <button type="submit" className='delete-button'>Delete Account</button>
+                        <button type="button" className='keep-button' onClick={() => setShowConfirmForm(false)}>
+                            Cancel
+                        </button>
+                    </div>
                 </form>
             ) : (
                 <>
-                    <button className='delete-button' onClick={openConfirm}>
+                    <button  className='delete-button' onClick={openConfirm}>
                         Confirm
                     </button>
                     <button className='keep-button' onClick={closeModal}>

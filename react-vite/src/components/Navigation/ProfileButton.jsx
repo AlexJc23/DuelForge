@@ -6,7 +6,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import { IoMdClose } from "react-icons/io";
 import SignupFormModal from "../SignupFormModal";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { useLocation } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ function ProfileButton() {
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
   const location = useLocation();
+  const navigate = useNavigate()
 
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -42,6 +43,7 @@ function ProfileButton() {
 
   const logout = (e) => {
     e.preventDefault();
+    navigate('/')
     dispatch(thunkLogout());
     setShowMenu(false);
   };

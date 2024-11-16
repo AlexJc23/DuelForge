@@ -1,14 +1,14 @@
+.stuff {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .deck-featured {
     display: flex;
     flex-direction: column;
     margin-top: 40px;
 }
 
-.stuff {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .deck-featured ul {
     list-style: none;
@@ -24,20 +24,20 @@
     position: relative;
 }
 
-.home-content {
-    width: 1200px;
-    margin: 25px auto;
-}
 
-#root > div.home-content > div.deck-featured > ul > div {
-    margin-bottom: 30px;
-}
 
 .deck-featured .card {
     position: relative;
     width: 120px;
     height: 150px;
     transition: transform 0.3s ease-in-out;
+}
+.home-content {
+    width: 1200px;
+    margin: 25px auto;
+}
+#root > div.home-content > div.deck-featured > ul > div {
+    margin-bottom: 30px;
 }
 
 .deck-img {

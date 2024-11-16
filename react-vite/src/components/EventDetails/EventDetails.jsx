@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { getOneEvent } from "../../redux/events";
 import EventNotFound from "./EventNotFound";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -116,7 +116,7 @@ const EventDetails = () => {
                         <p>${eventDetails.price.toFixed(2)}</p>
                     </div>
 
-                    <h5 style={{borderTop: '1px solid gray', paddingTop: '10px', margin: 'auto auto 10px 0', width: '90%', color: '#00bfff'}}>Host: {eventDetails.event_owner.username}</h5>
+                    <h5 style={{borderTop: '1px solid gray', paddingTop: '10px', margin: 'auto auto 10px 0', width: '90%', color: '#00bfff'}}>Host: <NavLink to={`/profile/${eventDetails.event_owner.id}`} >{eventDetails.event_owner.username}</NavLink></h5>
                 </div>
                 <div className="details-btm-rt">
                     <LoadMap id='map' address={eventDetails.location}/>

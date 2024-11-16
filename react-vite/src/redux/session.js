@@ -4,6 +4,8 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const USER_PROFILE = 'session/setUserProfile';
 const REMOVE_PROFILE = 'session/removeProfile'
+const UPDATE_PROFILE = 'session/updateUserProfile';
+
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -25,6 +27,10 @@ const removeUserFromDb = (user_id) => ({
   user_id
 })
 
+const updateUserProfile = (profile) => ({
+  type: UPDATE_PROFILE,
+  payload: profile,
+});
 
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
@@ -91,6 +97,26 @@ export const thunkGetUserProfile = (id) => async (dispatch) => {
   }
 };
 
+// update user info
+export const thunkUpdateUserProfile = (updatedData, id) => async (dispatch) => {
+  const response = await csrfFetch(`/api/users/update/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedData),
+  });
+
+  if (response.ok) {
+    const updatedProfile = await response.json();
+    dispatch(updateUserProfile(updatedProfile));
+    return updatedProfile;
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: 'Something went wrong. Please try again' };
+  }
+};
+
 
 // remove user from db
 export const thunkDeleteAccount = (user_id, password) => async (dispatch) => {
@@ -124,8 +150,14 @@ function sessionReducer(state = initialState, action) {
             return { ...state, userProfile: action.payload };
         case REMOVE_PROFILE:
             return { ...state, userProfile: null, user: null };
+        case UPDATE_PROFILE:
+            return {
+                ...state,
+                user: { ...state.user, ...action.payload }, // Update logged-in user data
+                userProfile: { ...state.userProfile, ...action.payload }, // Update profile data
+            };
         default:
-            return state;
+          return state;
     }
 }
 

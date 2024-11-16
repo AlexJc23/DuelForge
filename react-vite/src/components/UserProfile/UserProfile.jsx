@@ -5,7 +5,7 @@ import { getUserEventsById } from "../../redux/events";
 import Footer from "../Footer/Footer";
 import { NavLink, useParams } from "react-router-dom";
 import { thunkGetUserProfile } from "../../redux/session";
-
+import '.././LoggedinUserContent/LoggedinUserContent.css'
 
 
 
@@ -74,9 +74,7 @@ const UserProfile = () => {
                     <div className="left-top">
                         {allDecks.length < 1 ? (
                             <div className="no-content">
-                                <p>Oh no! You currently do not have any decks.</p>
-                                <p>Once you create a deck, you will see it here!</p>
-                                <NavLink className={'creation-btn'} to={'/decks/create'}>Create A Deck!</NavLink>
+                                <p>{'No decks have been created'}</p>
                             </div>
                         ) : (
                             <div className="decks-left">
@@ -112,9 +110,7 @@ const UserProfile = () => {
                     <div className="left-bottom">
                         {allEvents.length < 1 ? (
                             <div className="no-content">
-                                <p>Oh no! You currently do not have any decks.</p>
-                                <p>Once you create a deck, you will see it here!</p>
-                                <NavLink  className={'creation-btn'}  to={'/events/create'}>Create an Event!</NavLink>
+                                <p>No events have been created.</p>
                             </div>
                         ) : (
                             <div className="events-left">

@@ -12,6 +12,9 @@ const USER_DECKS = 'session/userDecks';
 
 
 
+
+
+
 // load all decks
 const loadDecks = (decks) => ({
     type: ALL_DECKS,
@@ -53,6 +56,9 @@ const removeDeck = (deck_id) => ({
     type: DELETE_DECK,
     deck_id
 })
+
+
+
 
 
 // get all decks with optional search queries
@@ -257,6 +263,9 @@ export const deleteDeck = (deck_id) => async (dispatch) => {
 
 
 
+
+
+
 const initialState = {allDecks: {}, deckDetail: {}, userDecks: {}}
 
 function decksReducer(state = initialState, action) {
@@ -326,6 +335,7 @@ function decksReducer(state = initialState, action) {
                 allDecks: remainingDecks,
             };
         }
+
         default:
             return state
     }

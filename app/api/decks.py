@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, redirect, request
 from app import db
-from app.models import Deck, Card, DeckCard, User, CardImage, Comment
+from app.models import Deck, Card, DeckCard, User, CardImage, Comment, Upvote
 from flask_login import current_user, login_required
 from app.forms import DeckForm, CommentForm
 
@@ -11,15 +11,15 @@ def allDecks():
     """
     GET ALL DECKS with optional search queries
     """
-    # Get search parameters from query string
+
     deck_name = request.args.get('deck_name', None)
     owner_name = request.args.get('owner_name', None)
     card_name = request.args.get('card_name', None)
 
-    # Start with querying all decks
+
     query = db.session.query(Deck)
 
-    # Filter decks by deck name if provided
+
     if deck_name:
         query = query.filter(Deck.name.ilike(f'%{deck_name}%'))
 
@@ -29,10 +29,8 @@ def allDecks():
     for deck in decks:
         solo_deck = deck.to_dict()
 
-        # Query the cards associated with the deck
         decks_table = db.session.query(DeckCard).filter(DeckCard.deck_id == deck.id).all()
 
-        # Query the deck owner
 
 
         cards = []
@@ -42,13 +40,11 @@ def allDecks():
 
             if card:
 
-                # If card_name is provided, filter by card name
                 if card_name and card_name.lower() not in card.name.lower():
-                    continue  # Skip if the card doesn't match the search
+                    continue
 
                 card_dict = card.to_dict()
 
-                # Get all images for the card
                 card_images = db.session.query(CardImage).filter(CardImage.card_id == card.id).all()
                 card_dict['images'] = [image.to_dict() for image in card_images]
 
@@ -210,21 +206,16 @@ def editDeck(deck_id):
 @decks_routes.route('/<int:deck_id>', methods=['DELETE'])
 @login_required
 def removeDeck(deck_id):
-    # Find the deck by its ID
     deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
 
-    # Check if the deck exists
     if not deck_by_id:
         return {'error': 'Deck does not exist'}, 404
 
-    # Get the current user details
     currentUser = current_user.to_dict()
 
-    # Check authorization
     if currentUser['id'] != deck_by_id.user_id:
         return {'error': 'Unauthorized to complete this action'}, 403
 
-    # Proceed to delete the deck
     db.session.delete(deck_by_id)
     db.session.commit()
     return {'message': 'Deck was removed successfully'}, 200
@@ -234,31 +225,34 @@ def removeDeck(deck_id):
 @decks_routes.route('/<int:deck_id>/comments')
 def allComments(deck_id):
     """
-        Get all comments for speciifc deck
+        Get all comments for a specific deck, ordered by newest first
     """
     deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
-
 
     if not deck_by_id:
         return {'error': 'Deck does not exist'}, 404
 
-    comments = db.session.query(Comment).filter(Comment.deck_id == deck_id).all()
 
+    comments = db.session.query(Comment).filter(Comment.deck_id == deck_id).order_by(Comment.created_at.desc()).all()
+    print('heyyyy ', comments)
     comments_list = []
 
     for comment in comments:
         comment_dict = comment.to_dict()
 
         user_comment = db.session.query(User).filter(comment.owner_id == User.id).first()
+        user_likes = db.session.query(Upvote).filter(Upvote.id == comment.id).all()
 
         user_info = {
             'username': user_comment.username,
-            'image_url': user_comment.image_url
+            'image_url': user_comment.image_url,
+            'user_id': user_comment.id
         }
+        comment_dict['likes'] = len(user_likes)
         comment_dict['comment_owner'] = user_info
 
         comments_list.append(comment_dict)
-
+    print('ordered? ', comments_list[0])
     return jsonify(comments_list)
 
 @decks_routes.route('/<int:deck_id>/comments', methods=['POST'])
@@ -291,49 +285,42 @@ def createComment(deck_id):
         return jsonify(new_comment)
     return form.errors, 400
 
-@decks_routes.route('/<int:deck_id>/comments/<int:comment_id>', methods=['PUT'])
+@decks_routes.route('/comment/<int:comment_id>', methods=['PUT'])
 @login_required
-def editComment(deck_id, comment_id):
+def editComment(comment_id):
+    """
+        Edit a comment
+    """
+    try:
+        comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
 
-    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
+        if not comment_by_id:
+            return {'error': 'Comment does not exist'}, 404
 
-    if not deck_by_id:
-        return {'error': 'Deck does not exist'}, 404
+        logged_in_user = current_user.to_dict()
 
-    comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
+        if comment_by_id.owner_id != logged_in_user['id']:
+            return {'errors': 'Unauthorized to edit this comment'}, 403
 
-    if not comment_by_id:
-        return {'error': 'Comment does not exist'}, 404
+        data = request.get_json()
 
-    logged_in_user = current_user.to_dict()
+        if 'comment' in data:
+            comment_by_id.comment = data['comment']
+            db.session.commit()
 
-    if comment_by_id.owner_id != logged_in_user['id']:
-        return {'errors': 'Unauthorized to edit this deck'}, 403
+        return jsonify(comment_by_id.to_dict()), 200
 
-    form = CommentForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-
-    if form.validate_on_submit():
-        if form.data.get('comment'):
-            comment_by_id.comment = form.data['comment']
-
-        db.session.commit()
-
-        updated_comment = comment_by_id.to_dict()
-
-        return jsonify(updated_comment)
-    return form.errors
+    except Exception as e:
+        print(f"Error editing comment: {e}")
+        return {'error': 'Internal server error'}, 500
 
 
-@decks_routes.route('/<int:deck_id>/comments/<int:comment_id>', methods=['DELETE'])
+@decks_routes.route('/comments/<int:comment_id>', methods=['DELETE'])
 @login_required
-def removeComment(deck_id, comment_id):
-
-    deck_by_id = db.session.query(Deck).filter(Deck.id == deck_id).first()
-
-    if not deck_by_id:
-        return {'error': 'Deck does not exist'}, 404
-
+def removeComment(comment_id):
+    """
+    Remove a comment
+    """
     comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
 
     if not comment_by_id:

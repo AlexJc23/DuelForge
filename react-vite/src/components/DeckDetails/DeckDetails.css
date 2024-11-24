@@ -34,6 +34,12 @@
 .details-body {
     width: 70%;
     margin: 30px auto;
+    position: relative;
+    z-index: 0;
+    background: #11111147;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+
 }
 .top-details{
     margin-bottom: 40px;
@@ -55,6 +61,16 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.465);
     padding: 0 0 50px 0;
 }
+.details-upperright a{
+    color: white;
+    cursor: pointer;
+
+}
+.details-upperright a:hover{
+    color: #00bfff;
+    cursor: pointer;
+
+}
 
 .zoomed-card-image{
     height: 700px;
@@ -67,4 +83,86 @@
 .card-modal-container{
    padding: 0;
    margin: 0;
+}
+
+
+.comment-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    max-height: 400px;
+    overflow: scroll;
+}
+
+
+.comment {
+    color: black;
+    display: flex;
+    flex-flow: wrap column;
+    gap: 14px;
+    color: white;
+    padding: 20px 15px 20px 20px;
+}
+.comment-wrapper{
+    border: 1px solid gray;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.comment h5{
+    font-size: x-small;
+    font-weight: 800;
+
+}
+.comment a{
+    color: rgba(255, 255, 255, 0.558);
+
+}
+.comment a:hover{
+    color: #00bfff;
+
+}
+
+
+.timestamp {
+    font-size: xx-small;
+    color: rgba(180, 180, 180, 0.342);
+}
+.even {
+    background-color: rgba(255, 255, 255, 0.068);
+
+}
+.even a{
+
+    color: rgba(204, 204, 204, 0.812);
+}
+.odd {
+    /* background-color: pink; */
+}
+
+.comment-delete{
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 7px;
+}
+.comment-delete:hover{
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    margin-right: 7px;
+}
+
+.details-lowerright{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.add-comment-btn{
+    width: fit-content;
+    align-self: flex-end;
 }

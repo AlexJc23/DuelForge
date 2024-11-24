@@ -24,6 +24,7 @@ class User(db.Model, UserMixin):
     comments = db.relationship('Comment', back_populates='user', cascade="all, delete-orphan")
     events = db.relationship('Event', back_populates='user', cascade="all, delete-orphan")
     decks = db.relationship('Deck', back_populates='user', cascade="all, delete-orphan")
+    upvotes = db.relationship('Upvote', back_populates='user', cascade='all, delete-orphan')
 
 
     @property

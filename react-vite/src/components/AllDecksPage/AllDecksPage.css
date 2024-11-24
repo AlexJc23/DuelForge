@@ -12,7 +12,11 @@
     flex-flow: column wrap;
     width: 80%;
     margin: 0 auto;
-
+    position: relative;
+    z-index: 0;
+    background: #11111147;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 .decks-container ul {
     list-style: none;

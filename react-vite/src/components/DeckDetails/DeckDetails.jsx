@@ -118,8 +118,8 @@ const DeckDetails = () => {
     };
 
     return (
-        <div className="wrapper">
-            <ParticlesComponent />
+        <div >
+            {/* <ParticlesComponent /> */}
             <div className="details-body">
                 <div>
                     <div className="top-details">

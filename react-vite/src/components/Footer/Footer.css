@@ -4,10 +4,12 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    position: relative; /* Changed to relative */
-    bottom: 0; /* Aligns to the bottom */
-    width: 100%; /* Full width */
-    padding: 30px 0 30px 0; /* Padding for spacing */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding: 30px 0 30px 0;
     border-top: 1px solid #1596c56f;
-    color: white; /* Text color */
+    color: rgb(150, 180, 39);
+    z-index: 1;
+    background-color: #111111fd;
 }

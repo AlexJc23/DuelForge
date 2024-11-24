@@ -5,7 +5,12 @@
    max-width: 1200px;
    /* border: 1px solid yellow; */
    min-height: 430px;
-
+   position: relative;
+   z-index: 0;
+   background: #11111147;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    padding: 50px;
 
 }
 .expand-button {
@@ -25,8 +30,8 @@
 }
 
 .user-right{
-    max-width: 600px;
-    min-width: 400px;
+    max-width: 400px;
+    min-width: 300px;
     display: flex;
     flex-flow: column wrap;
     gap: 30px;
@@ -162,7 +167,7 @@
 .delete-accnt-button {
     margin-top: auto;
     font-size: x-small;
-    color: rgb(90, 1, 1);
+    color: rgb(161, 1, 1);
 }
 
 .delete-form{
@@ -178,4 +183,13 @@
     justify-content: center;
     gap: 10px;
     margin: 10px;
+}
+
+
+
+.textBox{
+    height: 300px;
+    margin: 10px 0;
+    min-width: fit-content;
+    max-width: 100%;
 }

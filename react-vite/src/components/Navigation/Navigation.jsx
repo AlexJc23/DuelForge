@@ -2,6 +2,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Import 
 import ProfileButton from "./ProfileButton";
 import { useState } from 'react';
 import "./Navigation.css";
+import ParticlesComponent from "../LandingPage/particles";
 
 function Navigation() {
   const location = useLocation();
@@ -25,30 +26,33 @@ function Navigation() {
   };
 
   return (
-    <ul className="navbar">
-      <li>
-        <NavLink to="/">
-          <img className='logo' src="/logo.svg" alt="duelforge logo" />
-        </NavLink>
-      </li>
-
-      {showSearchBar && (
-        <li className="searchbar">
-          <form onSubmit={handleSearch}>
-            <input
-              type="textarea"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-
-          </form>
+    <div className="wrapper">
+      <ParticlesComponent />
+      <ul className="navbar">
+        <li>
+          <NavLink to="/">
+            <img className='logo' src="/logo.svg" alt="duelforge logo" />
+          </NavLink>
         </li>
-      )}
-      <li>
-        <ProfileButton />
-      </li>
-    </ul>
+
+        {showSearchBar && (
+          <li className="searchbar">
+            <form onSubmit={handleSearch}>
+              <input
+                type="textarea"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+
+            </form>
+          </li>
+        )}
+        <li>
+          <ProfileButton />
+        </li>
+      </ul>
+    </div>
   );
 }
 

@@ -163,6 +163,7 @@ const LoggedinUserContent = () => {
                             <form onSubmit={handleSubmit}>
                                 <label>
                                     <textarea
+                                        className="textBox"
                                         value={bio}
                                         onChange={(e) => setBio(e.target.value)}
                                         placeholder="Tell the world about yourself...."

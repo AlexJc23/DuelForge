@@ -1,12 +1,12 @@
 .profile-dropdown {
-  right: 2%;
-  top: 10%;
+  right: 4%;
+  top: 70%;
   position: absolute;
   background: rgba(20, 20, 20, 0.9);
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   padding: 10px;
-  z-index: 1000;
+  z-index: 4;
   transition: all 0.3s ease;
 }
 
@@ -67,6 +67,8 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
+  position: relative;
+  z-index: 20;
 }
 
 .navbar li {

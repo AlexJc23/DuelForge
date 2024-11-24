@@ -35,6 +35,12 @@
 .home-content {
     width: 1200px;
     margin: 25px auto;
+    position: relative;
+    z-index: 20;
+    background: #11111147;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    padding: 20px;
 }
 #root > div.home-content > div.deck-featured > ul > div {
     margin-bottom: 30px;

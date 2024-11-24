@@ -8,3 +8,4 @@ from .deck import Deck
 from .event import Event
 from .eventImage import EventImage
 from .deckCard import DeckCard
+from .likes import Upvote

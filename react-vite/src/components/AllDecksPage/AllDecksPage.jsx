@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { FaArrowLeftLong } from "react-icons/fa6";
+import Loading from '.././Loading'
 import './AllDecksPage.css'
 import Footer from "../Footer/Footer";
 
@@ -16,6 +17,8 @@ const AllDecksPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate()
+    const [searchTerms, setSearchTerms] = useState("");
+
 
     const getSearchQuery = (param) => {
         const searchParams = new URLSearchParams(location.search);
@@ -41,17 +44,7 @@ const AllDecksPage = () => {
 
     if (isLoading) {
         return (
-            <div id="loading">
-                <h1 className='loading'>
-                    <span className="let1">l</span>
-                    <span className="let2">o</span>
-                    <span className="let3">a</span>
-                    <span className="let4">d</span>
-                    <span className="let5">i</span>
-                    <span className="let6">n</span>
-                    <span className="let7">g</span>
-                </h1>
-            </div>
+            <Loading />
         );
     }
 
@@ -63,6 +56,13 @@ const AllDecksPage = () => {
         navigate('/home');
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        // Update the query string with the search term
+        const path = `/decks?search=${encodeURIComponent(searchTerms)}`;
+        navigate(path);
+        setSearchTerms(""); // Clear the search input
+    };
     return (
         <>
         <div  className="decks-container">
@@ -71,6 +71,16 @@ const AllDecksPage = () => {
                     <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
                         <FaArrowLeftLong style={{ marginRight: '5px' }} /> Home
                     </button>
+                    <li className="searchbar decks-search">
+                        <form onSubmit={handleSearch}>
+                        <input
+                            type="textarea"
+                            placeholder="Search..."
+                            value={searchTerms} 
+                            onChange={(e) => setSearchTerms(e.target.value)} 
+                        />
+                        </form>
+                    </li>
                 </div>
             </div>
             <ul className="decks-list">

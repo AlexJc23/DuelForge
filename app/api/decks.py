@@ -289,30 +289,26 @@ def createComment(deck_id):
 @login_required
 def editComment(comment_id):
     """
-        Edit a comment
+    Edit a comment
     """
-    try:
-        comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
+    comment_by_id = db.session.query(Comment).filter(Comment.id == comment_id).first()
 
-        if not comment_by_id:
-            return {'error': 'Comment does not exist'}, 404
+    if not comment_by_id:
+        return {'error': 'Comment does not exist'}, 404
 
-        logged_in_user = current_user.to_dict()
+    logged_in_user = current_user.to_dict()
 
-        if comment_by_id.owner_id != logged_in_user['id']:
-            return {'errors': 'Unauthorized to edit this comment'}, 403
+    if comment_by_id.owner_id != logged_in_user['id']:
+        return {'errors': 'Unauthorized to edit this comment'}, 403
 
-        data = request.get_json()
+    data = request.get_json()
 
-        if 'comment' in data:
-            comment_by_id.comment = data['comment']
-            db.session.commit()
+    if 'comment' in data:
+        comment_by_id.comment = data['comment']
+        db.session.commit()
 
-        return jsonify(comment_by_id.to_dict()), 200
+    return jsonify(comment_by_id.to_dict()), 200
 
-    except Exception as e:
-        print(f"Error editing comment: {e}")
-        return {'error': 'Internal server error'}, 500
 
 
 @decks_routes.route('/comments/<int:comment_id>', methods=['DELETE'])

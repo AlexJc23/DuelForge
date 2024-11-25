@@ -7,6 +7,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import './AllEvents.css'
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
+import Loading from "../Loading";
 
 const AllEvents = () => {
     const events = useSelector(state => state.eventsReducer.allEvents)
@@ -16,6 +17,7 @@ const AllEvents = () => {
     const [error, setError] = useState(null)
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(true);
+    const [searchTerms, setSearchTerms] = useState("");
 
 
     const getSearchQuery = (param) => {
@@ -41,17 +43,7 @@ const AllEvents = () => {
 
     if (isLoading) {
         return (
-            <div id="loading">
-                <h1 className='loading'>
-                    <span className="let1">l</span>
-                    <span className="let2">o</span>
-                    <span className="let3">a</span>
-                    <span className="let4">d</span>
-                    <span className="let5">i</span>
-                    <span className="let6">n</span>
-                    <span className="let7">g</span>
-                </h1>
-            </div>
+            <Loading />
         );
     }
 
@@ -72,6 +64,14 @@ const AllEvents = () => {
         });
     }
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        const path = `/events?search=${encodeURIComponent(searchTerms)}`;
+        navigate(path);
+        setSearchTerms("");
+    };
+
     return (
         <>
         <div className="events-container">
@@ -80,6 +80,16 @@ const AllEvents = () => {
                     <button className="glow-on-hover" style={{ background: 'black' }} onClick={handleGoBack}>
                         <FaArrowLeftLong style={{ marginRight: '5px' }} /> Home
                     </button>
+                    <li className="searchbar decks-search">
+                        <form onSubmit={handleSearch}>
+                        <input
+                            type="textarea"
+                            placeholder="Search..."
+                            value={searchTerms} 
+                            onChange={(e) => setSearchTerms(e.target.value)} 
+                        />
+                        </form>
+                    </li>
                 </div>
             </div>
             {allEvents.length != 0 ? (<ul className="events-list">

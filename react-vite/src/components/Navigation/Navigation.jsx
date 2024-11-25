@@ -34,20 +34,6 @@ function Navigation() {
             <img className='logo' src="/logo.svg" alt="duelforge logo" />
           </NavLink>
         </li>
-
-        {showSearchBar && (
-          <li className="searchbar">
-            <form onSubmit={handleSearch}>
-              <input
-                type="textarea"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-
-            </form>
-          </li>
-        )}
         <li>
           <ProfileButton />
         </li>

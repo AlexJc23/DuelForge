@@ -1,30 +1,35 @@
 .profile-dropdown {
-  right: 4%;
-  top: 70%;
-  position: absolute;
+  position: fixed; /* Fixed position for sticky behavior */
+  top: 0;
+  right: -20px; /* Initially off-screen to the right */
+  height: 100vh;
+  width: 250px;
   background: rgba(20, 20, 20, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  z-index: 4;
-  transition: all 0.3s ease;
+  z-index: 10;
+  padding: 20px;
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5); /* Shadow on the left side */
+  border-radius: 10px 0 0 10px; /* Rounded corners on the left */
+  transform: translateX(0); /* Default position */
+  transition: transform 1s ease-in-out; /* Smooth slide effect */
+
 }
 
+.profile-dropdown.open {
+  transform: translateX(-20px); /* Slide in when open */
+}
+
+
 .profile-dropdown div {
-  padding: 10px 0;
+  padding: 20px 0;
   color: #00bfff;
   font-weight: bold;
-  text-align: center;
-  margin-top: 5px;
-  margin-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.27);
+  margin-top: 10px;
 }
 
 .profile-dropdown li {
   list-style: none;
-  margin: 10px 0;
-  position: relative;
-  margin-top: 5px;
+  margin: 20px 0;
 }
 
 .profile-dropdown li a,
@@ -47,7 +52,6 @@
 
 .profile-dropdown button.glow-on-hover2 {
   background: transparent;
-  margin-top: 20px;
   border: 2px solid #00bfff;
   transition: background 0.3s, color 0.3s;
 }
@@ -124,4 +128,26 @@
 
 .menu-drop:active {
   background: rgba(0, 191, 255, 0.3);
+}
+
+
+
+.close-x {
+  position: absolute;
+  top: 30px; /* Adjust according to the desired position */
+  right: 220px; /* Initial position on the right */
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out; /* Smooth sliding effect */
+}
+
+.close-x.slide-left {
+  transform: translateX(-100%); /* Slide to the left */
+  background: #11111147;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.hidden-x{
+  visibility: hidden;
 }

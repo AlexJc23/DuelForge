@@ -88,8 +88,7 @@ const HomePage = () => {
                                 <div className="cards">
                                     <img className="event-img" src={successfulEvent.images[0].image_url} alt={successfulEvent.name} />
                                     <div className="info">
-                                        <h4 style={{ color: '#00bfff', fontWeight: '800', fontSize: '1rem' }}>{successfulEvent.name}</h4>
-                                        <p>{successfulEvent.description}</p>
+                                        <h6 style={{ color: '#00bfff', fontWeight: '800', fontSize: '1rem' }}>{successfulEvent.name}</h6>
                                         <p style={{ marginTop: '20px' }}>${successfulEvent.price.toFixed(2)}</p>
                                     </div>
                                 </div>

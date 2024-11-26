@@ -1,0 +1,90 @@
+/* Create Title */
+.create-title {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* Form */
+.create-comment-form {
+    background-color: #333;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    max-width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Comment Textarea */
+.comment-label {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.comment-textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #222;
+    color: #fff;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #2980b9;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Form Buttons */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-button,
+.cancel-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-button {
+    background-color: #2980b9; /* Blue for submit */
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #3498db;
+}
+
+.cancel-button {
+    background-color: #e74c3c; /* Red for cancel */
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #c0392b;
+}
+
+/* Focus Styles for Accessibility */
+.submit-button:focus,
+.cancel-button:focus {
+    outline: 2px solid #1abc9c;
+    outline-offset: 2px;
+}

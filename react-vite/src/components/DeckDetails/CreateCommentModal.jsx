@@ -2,6 +2,7 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { createComment, getComments } from "../../redux/comments";
+import './CreateCommentModal.css'
 
 const CreateCommentModal = ({ deck_id }) => {
     console.log('lions ',deck_id)

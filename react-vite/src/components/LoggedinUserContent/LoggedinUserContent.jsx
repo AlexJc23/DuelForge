@@ -130,7 +130,6 @@ const LoggedinUserContent = () => {
                                                     <img className="event-img" src={successfulEvent.image[0].image_url} alt={successfulEvent.name} />
                                                     <div className="info">
                                                         <h4 style={{ color: '#00bfff', fontWeight: '800', fontSize: '1rem' }}>{successfulEvent.name}</h4>
-                                                        <p>{successfulEvent.description}</p>
                                                         <p style={{ marginTop: '20px' }}>${successfulEvent.price.toFixed(2)}</p>
                                                     </div>
                                                 </div>
@@ -170,8 +169,8 @@ const LoggedinUserContent = () => {
                                     />
                                 </label>
                                 {error.bio && <div className="error">{error.bio}</div>}
-                                <button type="submit">Save</button>
-                                <button type="button" onClick={() => setEditingBio(false)}>Cancel</button>
+                                <button className='save-cstm-btn' type="submit">Save</button>
+                                <button  className='close-cstm-btn'type="button" onClick={() => setEditingBio(false)}>Cancel</button>
                             </form>
                         )}
                     </div>

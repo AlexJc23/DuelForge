@@ -196,8 +196,8 @@ const DeckDetails = () => {
                                                             />
                                                         </label>
                                                         {error.content && <div className="error">{error.content}</div>}
-                                                        <button type="submit">Save</button>
-                                                        <button type="button" onClick={() => setEditCommentId(null)}>Cancel</button>
+                                                        <button className="save-cstm-btn" type="submit">Save</button>
+                                                        <button className='close-cstm-btn' type="button" onClick={() => setEditCommentId(null)}>Cancel</button>
                                                     </form>
                                                 ) : (
                                                     <p>{comment.comment}</p>

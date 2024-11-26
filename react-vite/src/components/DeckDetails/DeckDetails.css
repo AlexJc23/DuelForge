@@ -8,9 +8,9 @@
     font-size: 12px;
     border-radius: 8px;
     text-align: center;
-    border: 1px solid yellow;
     cursor: pointer;
 }
+
 .details-left {
     width: 50%;
     display: flex;
@@ -23,6 +23,7 @@
     padding: 10px 0;
     justify-content: center;
 }
+
 .details-right {
     width: 40%;
     display: flex;
@@ -39,54 +40,51 @@
     background: #11111147;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
-
 }
-.top-details{
+
+.top-details {
     margin-bottom: 40px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.476);
 }
 
-.lower-details{
+.lower-details {
     display: flex;
     padding-left: 30px;
     gap: 50px;
 }
 
-.details-upperright{
+.details-upperright {
     display: flex;
     flex-flow: column wrap;
     gap: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.465);
     padding: 0 0 50px 0;
 }
-.details-upperright a{
+
+.details-upperright a {
     color: white;
     cursor: pointer;
-
 }
-.details-upperright a:hover{
+
+.details-upperright a:hover {
     color: #00bfff;
-    cursor: pointer;
-
 }
 
-.zoomed-card-image{
+.zoomed-card-image {
     height: 700px;
     padding: 0;
     margin: 0;
     display: block;
-
 }
 
-.card-modal-container{
-   padding: 0;
-   margin: 0;
+.card-modal-container {
+    padding: 0;
+    margin: 0;
 }
 
-
-.comment-section{
+.comment-section {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -95,74 +93,88 @@
     overflow: scroll;
 }
 
-
 .comment {
-    color: black;
+    color: white;
     display: flex;
     flex-flow: wrap column;
     gap: 14px;
-    color: white;
     padding: 20px 15px 20px 20px;
 }
-.comment-wrapper{
+
+.comment-wrapper {
     border: 1px solid gray;
     border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.comment h5{
+
+.comment h5 {
     font-size: x-small;
     font-weight: 800;
-
 }
-.comment a{
+
+.comment a {
     color: rgba(255, 255, 255, 0.558);
-
 }
-.comment a:hover{
+
+.comment a:hover {
     color: #00bfff;
-
 }
-
 
 .timestamp {
     font-size: xx-small;
     color: rgba(180, 180, 180, 0.342);
 }
+
 .even {
     background-color: rgba(255, 255, 255, 0.068);
-
 }
-.even a{
 
+.even a {
     color: rgba(204, 204, 204, 0.812);
 }
-.odd {
-    /* background-color: pink; */
-}
 
-.comment-delete{
+.odd {}
+
+.comment-delete {
     background: none;
     border: none;
     color: white;
     cursor: pointer;
     margin-right: 7px;
 }
-.comment-delete:hover{
-    background: none;
-    border: none;
+
+.comment-delete:hover {
     color: red;
-    cursor: pointer;
-    margin-right: 7px;
 }
 
-.details-lowerright{
+.details-lowerright {
     display: flex;
     flex-direction: column;
     padding: 0;
 }
-.add-comment-btn{
+
+.add-comment-btn {
     width: fit-content;
     align-self: flex-end;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-comment-btn:hover {
+    background-color: #3498db;
+    transform: scale(1.05);
+}
+
+.add-comment-btn:focus {
+    outline: 2px solid #1abc9c;
+    outline-offset: 2px;
 }

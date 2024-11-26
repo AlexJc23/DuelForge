@@ -25,9 +25,7 @@
     margin: 0 30px;
 }
 
-.event-card:hover {
-    /* Duplicate styles are not necessary */
-}
+
 
 .events-container {
     width: 85%;

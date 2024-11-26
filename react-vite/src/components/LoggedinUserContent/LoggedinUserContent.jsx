@@ -146,10 +146,10 @@ const LoggedinUserContent = () => {
                 </div>
                 <div className="user-right">
                     <h2>{currentUser.username}</h2>
-                    <div className="follows">
+                    {/* <div className="follows">
                         <p>Following</p>
                         <p>Followers</p>
-                    </div>
+                    </div> */}
                     <p>Created: {allDecks.length} {allDecks.length > 1 ? 'Decks' : 'Deck'}</p>
                     <p>Hosted: {allEvents.length} {allEvents.length > 1 ? 'Events' : 'Event'}</p>
                     <div className="user-bio">
